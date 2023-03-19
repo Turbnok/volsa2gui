@@ -26,6 +26,8 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
-    "vue": "^3.2.40"
+    "vue": "^3.2.40",
+    "vue-draggable-next": "^2.1.1",
+    "vuedraggable": "^4.1.0"
   }
 }

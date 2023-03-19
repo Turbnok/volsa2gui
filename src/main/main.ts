@@ -1,6 +1,20 @@
-import {app, BrowserWindow, ipcMain, session} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain, session} from 'electron';
 import {join} from 'path';
 
+function execShellCommand(cmd):Promise<string> {
+  const exec = require('child_process').exec;
+  return new Promise((resolve, reject) => {
+   exec(cmd, (error, stdout, stderr) => {
+    
+    if (error) {
+     console.log("ERROR ");
+     console.warn(error);
+    }
+    console.log("RESOLVE ?? ");
+    resolve(stdout? stdout : stderr);
+   });
+  });
+ }
 function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -23,7 +37,6 @@ function createWindow () {
 
 app.whenReady().then(() => {
   createWindow();
-
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
@@ -48,4 +61,13 @@ app.on('window-all-closed', function () {
 
 ipcMain.on('message', (event, message) => {
   console.log(message);
+})
+ipcMain.handle('ls', async () => {
+  return await execShellCommand("ls ../").then((list:string)=>{
+  //  console.log("LAPIN");
+    return list.split("\n");
+  }); 
+  
+ // dialog.showOpenDialog()  console.log("dialog");console.log("out ??" , out)
+
 })
