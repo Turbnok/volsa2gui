@@ -3,15 +3,27 @@
  */
 export default interface ElectronApi {
   sendMessage: (message: string) => void,
+  openURL: (url: string) => void,
   dialog:()=>void
 }
+/** FS as FileSystem */
 export interface Fs {
-  ls: () => String,
+  ls: () => Array<string>,
+  checkvolsa: ()=>boolean,
+  debuge: ()=>string
 }
+export interface Volsa {
+  list: () => Array<string>|string,     
+  download: () => Array<string>,    
+  upload:() => Array<string>,     
+  remove: () => Array<string>,     
+}
+
 
 declare global {
   interface Window {
     electronAPI: ElectronApi,
-    fs:Fs
+    fs:Fs,
+    volsa:Volsa
   }
 }

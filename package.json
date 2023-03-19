@@ -1,7 +1,7 @@
 {
-  "name": "electron-vue-template",
-  "version": "0.1.0",
-  "description": "A minimal Electron + Vue application",
+  "name": "volsa2-gui",
+  "version": "0.0.1",
+  "description": "A GUI for volsa-cli",
   "main": "build/main/main.js",
   "scripts": {
     "dev": "node scripts/dev-server.js",
@@ -10,10 +10,11 @@
     "build:mac": "node scripts/build.js && electron-builder --mac",
     "build:linux": "node scripts/build.js && electron-builder --linux"
   },
-  "repository": "https://github.com/deluze/electron-vue-template",
+  "repository": "https://github.com/Turbnok/volsa2gui",
   "author": {
-    "name": "Deluze",
-    "url": "https://github.com/Deluze"
+    "email": "alexis@ladydinde.com",
+    "name": "Turbnok",
+    "url": "https://github.com/Turbnok"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

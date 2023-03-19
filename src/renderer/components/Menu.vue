@@ -4,13 +4,24 @@ import { ref } from 'vue'
 
 // type-based
 const emit = defineEmits<{
-  (e: 'refresh_list', list: Array<string>): void
+  (e: 'refresh_list', list: Array<string>|string): void
+  (e: 'check', result: boolean): void
+  (e: 'error', message: string): void
 }>()
 
 
 defineProps<{ msg: string }>()
 // call the function
-function listDirs(){
+async function listDirs(){
+  const list = await window.volsa.list();
+  console.log(list)
+  if(list==="no volca"){
+    console.log("Error: could not find volca sample")
+    emit("error","Error: could not find volca sample");
+  }else{
+    emit("refresh_list",list);
+  }
+  
   // execute('ls ../', (output:String) => {
   //   console.log("EXECUTE");
   //     emit("refresh_list",output.split("\n"));
@@ -20,29 +31,48 @@ async function hop(){
   console.log("HOP ???")
   //window.electronAPI.loadPreferences()
 
-  const list = await window.fs.ls();
+  const list = await window.volsa.list()
+
   console.log("list ", list)
-  emit("refresh_list",list);
+  //emit("refresh_list",list);
+ // window["MY_APP_NAMESPACE"].openDialog();
+}
+async function check(){
+  const result = await window.fs.debuge();
+  console.log("reuslt", result)
+  //emit("check",result);
  // window["MY_APP_NAMESPACE"].openDialog();
 }
 const list = ref()
 </script>
 
 <template>
-  <h2>Volsa2 Simple gui</h2>
+  <div class="header">
+    <img class="sample2" src="/sample2.svg" alt="Sample2" />
+    <h2>Volsa2 gui</h2>
+  </div>
   <div class="menu">
+   
     <div class="left">
-      <button type="button" @click="listDirs">receive</button>
+      <button type="button" @click="listDirs">list</button>
       <button type="button" @click="listDirs">send</button>
     </div>
     <div class="right">
       <button type="button" @click="hop">clear all</button>
-    
+      <button type="button" @click="check">check</button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.header{
+  padding:0rem 1rem;
+  display: flex;
+  flex-direction: row;
+}
+.sample2{
+  width: 75px;
+}
 h2{
   padding:0rem 1rem;
 }

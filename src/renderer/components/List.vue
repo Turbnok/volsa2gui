@@ -45,7 +45,7 @@ document.addEventListener('dragover', (e) => {
     @change="change"
   >
     <div  class="row" v-for="element in list"
-        :key="element.text">{{element.text}}</div>  
+        :key="element.id"><span class="number">{{ element.id }}</span> : {{ element.text}}</div>  
   </VueDraggableNext>
 </div>
 </template>
@@ -56,6 +56,9 @@ document.addEventListener('dragover', (e) => {
   overflow-y: auto;
   padding:0rem 1rem 1rem 1rem;
 
+}
+.number{
+  color: "#bf616a"
 }
 .table{
   width:100%;
