@@ -16,8 +16,7 @@ async function listDirs(){
   const list = await window.volsa.list();
   console.log(list)
   if(list==="no volca"){
-    console.log("Error: could not find volca sample")
-    emit("error","Error: could not find volca sample");
+    emit("error","Error: could not find volca sample. Is it plugged ?");
   }else{
     emit("refresh_list",list);
   }
@@ -48,7 +47,7 @@ const list = ref()
 
 <template>
   <div class="header">
-    <img class="sample2" src="/sample2.svg" alt="Sample2" />
+    <img class="sample2" src="/volca2.svg" alt="Sample2" />
     <h2>Volsa2 gui</h2>
   </div>
   <div class="menu">

@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps(['msg'])
+// type-based
+const emit = defineEmits<{
+  (e: 'close'): void
+  
+}>()
+
 async function check(){
     volsa.value = await window.fs.checkvolsa();
 }
@@ -10,13 +16,20 @@ function onVolsa(e:any){
    window.electronAPI.openURL("https://github.com/00nktk/volsa2")
 }
 const volsa = ref(true);
-
-//check();
+const msg = ref("");
+function close(){
+emit("close")
+  msg.value="";
+}
+watch(() => props.msg, (pMsg) => {
+    msg.value = pMsg
+});
+check();
 </script>
 
 <template>
-<div class="error" v-if="!volsa||props.msg.length">
-    <div class="message" v-if="props.msg.length">{{ props.msg }}</div>
+<div @click="close" class="error" v-if="!volsa||msg.length">
+    <div class="message" v-if="msg.length">{{ msg }}</div>
     <div class="message" v-if="!volsa">Error : volsa2-cli is not installed or not in `/home/$USER/.cargo/bin/volsa2-cli`, please check <a @click="onVolsa">https://github.com/00nktk/volsa2</a> README.md</div>
 </div>
 </template>

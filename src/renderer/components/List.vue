@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import  Item from './Item.vue'
+
 
 import { VueDraggableNext } from 'vue-draggable-next'
 
@@ -7,46 +9,65 @@ function change(hop:string){
   console.log("hop")  
  
 }
-
-defineProps<{ list: Array<{id:Number,text:string,moved:boolean}> }>()
-// call the function
-//const list = ref()
-document.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      });
-     
-    document.addEventListener('dragenter', (event) => {
-        console.log('File is in the Drop Space');
-    });
-     
-    document.addEventListener('dragleave', (event) => {
-      
-        console.log('File has left the Drop Space');
-    });
-    document.addEventListener('drop', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log(event.dataTransfer?.items)
-        let nbItems =  event.dataTransfer?.items?.length ?? 0;
+function onDragEnter(e:any){
+  console.log(e)
+  let nbItems =  e.dataTransfer?.items?.length ?? 0;
+  console.log("nbItems",nbItems )
         for (let f=0; f<nbItems ;f++) {
             // Using the path attribute to get absolute file path
             //const item = event.dataTransfer?.items.item(0);
-            console.log('File Path of dragged files: ', f)
+            //console.log('File Path of dragged files: ', f)
         }
-    });
+}
+function onDrop(e:any){
+  e.preventDefault();
+  e.stopPropagation();
+  console.log(e.dataTransfer?.items)
+  let nbItems =  e.dataTransfer?.items?.length ?? 0;
+  for (let f=0; f<nbItems ;f++) {
+      // Using the path attribute to get absolute file path
+      const item = e.dataTransfer?.items.item(0);
+      //console.log('File Path of dragged files: ', f)
+    }
+}
+defineProps<{ list: Array<{id:Number,text:string,moved:boolean}> }>()
+// call the function
+// //const list = ref()
+    // document.addEventListener('dragover', (e) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //   });
+     
+    // document.addEventListener('dragenter', (event) => {
+    //     console.log('File is in the Drop Space');
+    // });
+     
+    // document.addEventListener('dragleave', (event) => {
+      
+    //     console.log('File has left the Drop Space');
+    // });
+    // document.addEventListener('drop', (event) => {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     console.log(event.dataTransfer?.items)
+    //     let nbItems =  event.dataTransfer?.items?.length ?? 0;
+    //     for (let f=0; f<nbItems ;f++) {
+    //         // Using the path attribute to get absolute file path
+    //         //const item = event.dataTransfer?.items.item(0);
+    //         console.log('File Path of dragged files: ', f)
+    //     }
+    // });
 </script>
 <template>
-<div class="list">
-  <VueDraggableNext 
+<div class="list" @dragenter.self="onDragEnter" @drop.self="onDrop">
+  <!-- <VueDraggableNext 
     class="table"
     :list="list"
     ghost-class="ghost"
     @change="change"
-  >
-    <div  class="row" v-for="element in list"
-        :key="element.id"><span class="number">{{ element.id }}</span> : {{ element.text}}</div>  
-  </VueDraggableNext>
+  > -->
+    <Item v-for="sound in list" :sound="sound" :key="sound.id"/>
+  <!-- </VueDraggableNext> -->
 </div>
 </template>
 

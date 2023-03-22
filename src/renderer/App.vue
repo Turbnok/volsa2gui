@@ -9,6 +9,9 @@ const list = ref(Array(200).fill("hop").map((a,i)=>{return {id:i+1,text:"-",move
 const msg = ref("");
 //Array(200).fill("hop").map(()=>{return {id:0,text:"hop",moved:false}}
 console.log();
+function close(){
+  msg.value="";
+}
 function refreshList(pList:Array<string>|string){
   if(isArray(pList)){
     list.value = pList.map(((v,i)=> {
@@ -22,7 +25,7 @@ function error(message:string){
 }
 </script>
 <template>
-  <Erro :msg="msg"/>  
+  <Erro v-on:close="close"  :msg="msg"/>  
   <Menu msg="lapin" v-on:refresh_list="refreshList" v-on:error="error"/>
   <List :list="list"/>
 </template>
