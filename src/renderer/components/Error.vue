@@ -24,7 +24,7 @@ emit("close")
 watch(() => props.msg, (pMsg) => {
     msg.value = pMsg
 });
-check();
+//check();
 </script>
 
 <template>

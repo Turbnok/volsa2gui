@@ -88,20 +88,7 @@ defineProps<{ list: Array<{id:Number,text:string,moved:boolean}> }>()
   border: 1px solid #888;
  
 }
-.row {
-  border-bottom: 1px solid #888;
-  width:100%;
-  text-align: left;
-  color: #888;
-  padding:0.5rem;
-  list-style: none;
-  background-color: #242424;
-  
-}
-.row:last-child{
-  border-bottom: 0px;
-  
-}
+
 .ghost{
     width:100%;
   text-align: left;

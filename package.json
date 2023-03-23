@@ -27,6 +27,8 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
+    "sass": "^1.59.3",
+    "sass-loader": "^13.2.1",
     "vue": "^3.2.40",
     "vue-draggable-next": "^2.1.1",
     "vuedraggable": "^4.1.0"
