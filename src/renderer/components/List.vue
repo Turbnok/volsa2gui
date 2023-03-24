@@ -1,14 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import  Item from './Item.vue'
 
-
-import { VueDraggableNext } from 'vue-draggable-next'
-
-function change(hop:string){
-  console.log("hop")  
- 
-}
 function onDragEnter(e:any){
   console.log(e)
   let nbItems =  e.dataTransfer?.items?.length ?? 0;
@@ -33,30 +25,31 @@ function onDrop(e:any){
 defineProps<{ list: Array<{id:Number,text:string,changed:boolean}> }>()
 // call the function
 // //const list = ref()
-    // document.addEventListener('dragover', (e) => {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //   });
-     
-    // document.addEventListener('dragenter', (event) => {
-    //     console.log('File is in the Drop Space');
-    // });
-     
-    // document.addEventListener('dragleave', (event) => {
-      
-    //     console.log('File has left the Drop Space');
-    // });
-    // document.addEventListener('drop', (event) => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     console.log(event.dataTransfer?.items)
-    //     let nbItems =  event.dataTransfer?.items?.length ?? 0;
-    //     for (let f=0; f<nbItems ;f++) {
-    //         // Using the path attribute to get absolute file path
-    //         //const item = event.dataTransfer?.items.item(0);
-    //         console.log('File Path of dragged files: ', f)
-    //     }
-    // });
+ document.addEventListener('dragover', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+    console.log(event.dataTransfer?.items)
+   });
+  
+ document.addEventListener('dragenter', (event) => {
+     console.log('File is in the Drop Space');
+ });
+  
+// document.addEventListener('dragleave', (event) => {
+  
+//     console.log('File has left the Drop Space');
+// });
+// document.addEventListener('drop', (event) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+//     console.log(event.dataTransfer?.items)
+//     let nbItems =  event.dataTransfer?.items?.length ?? 0;
+//     for (let f=0; f<nbItems ;f++) {
+//         // Using the path attribute to get absolute file path
+//         //const item = event.dataTransfer?.items.item(0);
+//         console.log('File Path of dragged files: ', f)
+//     }
+// });
 </script>
 <template>
 <div class="list" @dragenter.self="onDragEnter" @drop.self="onDrop">
