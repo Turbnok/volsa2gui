@@ -1,11 +1,32 @@
 :root {
+   
+  --nord0: #2e3440;
+  --nord1: #3b4252;
+  --nord2: #434c5e;
+  --nord3: #4c566a;
+
+  --nord4: #d8dee9;
+  --nord5: #e5e9f0;
+  --nord6: #eceff4;
+  --nord7: #8fbcbb;
+
+  --nord8: #88c0d0;
+  --nord9: #81a1c1;
+  --nord10: #5e81ac;
+
+  --nord11: #bf616a;
+  --nord12: #d08770;
+  --nord13: #ebcb8b;
+  --nord14: #a3be8c;
+
+  --nord15: #b48ead;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,18 +34,21 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  
+  user-select: none;
+
+ 
+
 }
 *{
   box-sizing: border-box;
 }
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--nord10);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--nord10);  
 }
 
 body {
@@ -32,7 +56,13 @@ body {
   display: flex;
   min-width: 320px;
   height: 100vh;
-
+  background:repeating-linear-gradient(
+    45deg,
+    var(--nord0),
+    var(--nord0) 5px,
+    var(--nord1) 5px,
+    var(--nord1) 10px
+  );
 }
 
 h1 {
@@ -47,40 +77,41 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color:var(--nord3);
   cursor: pointer;
   transition: border-color 0.25s;
+  color:white
 }
 button:hover {
-  border-color: #646cff;
+  border-color:var(--nord10);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:disabled{
+  color:var(--nord1)
 }
-
-code {
-  background-color: #1a1a1a;
-  padding: 2px 4px;
-  margin: 0 4px;
-  border-radius: 4px;
+button:disabled:hover {
+  border-color:transparent;
 }
 
-.card {
-  padding: 2em;
-}
+
+
+
 
 #app {
   max-width: 1280px;
   width:100%;
- 
   display: flex;
   flex-direction: column;
   height:100vh;
+  margin:auto;
+  box-shadow: #000000 0px 0px 50px 0px;
+  background-color: var(--nord0);
+}
+
+
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
+  /* :root {
     color: #213547;
     background-color: #ffffff;
   }
@@ -92,5 +123,5 @@ code {
   }
   code {
     background-color: #f9f9f9;
-  }
+  } */
 }

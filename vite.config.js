@@ -12,7 +12,7 @@ const config = defineConfig({
     server: {
         port: 8080,
     },
-    open: false,
+    open: true,
     build: {
         outDir: Path.join(__dirname, 'build', 'renderer'),
         emptyOutDir: true,

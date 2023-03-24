@@ -30,7 +30,7 @@ function onDrop(e:any){
       //console.log('File Path of dragged files: ', f)
     }
 }
-defineProps<{ list: Array<{id:Number,text:string,moved:boolean}> }>()
+defineProps<{ list: Array<{id:Number,text:string,changed:boolean}> }>()
 // call the function
 // //const list = ref()
     // document.addEventListener('dragover', (e) => {
@@ -60,14 +60,7 @@ defineProps<{ list: Array<{id:Number,text:string,moved:boolean}> }>()
 </script>
 <template>
 <div class="list" @dragenter.self="onDragEnter" @drop.self="onDrop">
-  <!-- <VueDraggableNext 
-    class="table"
-    :list="list"
-    ghost-class="ghost"
-    @change="change"
-  > -->
-    <Item v-for="sound in list" :sound="sound" :key="sound.id"/>
-  <!-- </VueDraggableNext> -->
+  <Item v-for="sound in list" :sound="sound" :key="`sound${sound.id}`"/>
 </div>
 </template>
 

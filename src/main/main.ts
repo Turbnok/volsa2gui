@@ -1,4 +1,4 @@
-import {app, BrowserWindow, dialog, ipcMain, session} from 'electron';
+import {app, BrowserWindow, dialog,shell, ipcMain, session} from 'electron';
 import {join } from 'path'
 
 
@@ -23,9 +23,10 @@ function createWindow () {
     icon: join(__dirname, 'static/icon.png'),
     autoHideMenuBar: true,
     darkTheme:true,
+    
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       devTools: true,//process.env.NODE_ENV ==='development'
     }
@@ -34,10 +35,19 @@ function createWindow () {
   if (process.env.NODE_ENV === 'development') {
     const rendererPort = process.argv[2];
     mainWindow.loadURL(`http://localhost:${rendererPort}`);
+    //mainWindow.loadURL(`http://www.ladydinde.com`);
+    console.log("hop?" )
   }
   else {
     mainWindow.loadFile(join(app.getAppPath(), 'renderer', 'index.html'));
   }
+   // Make all links open with the browser, not with the application
+   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    console.log("URL ...", url)
+      if (url.startsWith('https:')) shell.openExternal(url)
+        return { action: 'deny' }
+    })
+
 }
 
 app.whenReady().then(() => {
@@ -63,7 +73,6 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 });
-
 ipcMain.on('openURL', (event, url) => {
   console.log(url);
   require('electron').shell.openExternal(url);
@@ -77,30 +86,20 @@ ipcMain.handle('ls', async () => {
 })
 ipcMain.handle('debuge', async () => {
   console.log(app.getPath('home'))
- 
- return await execShellCommand(join(app.getPath('home'),'/.cargo/bin/volsa2-cli')); 
-    
-    
-
-  
-  
-  
+  //return await execShellCommand(join(app.getPath('home'),'/.cargo/bin/volsa2-cli')); 
 })
 ipcMain.handle('checkvolsa', async () => {  
   return await execShellCommand(`command -v ${join(app.getPath('home'),'/.cargo/bin/volsa2-cli')}`).then((list:string)=>{
      return true
   }).catch((error)=>false); 
 })
-
 ipcMain.handle('list', async () => {
   console.log("List ?")  
   return await execShellCommand(`${join(app.getPath('home'),'/.cargo/bin/volsa2-cli')} list`).then((list:string)=>{
     console.log("la ???")
     const samples:Array<string> = list.split("\n");
     samples.pop()
-
     return samples;
-
   }).catch((error)=>{
     console.log("Error")
     return "no volca"

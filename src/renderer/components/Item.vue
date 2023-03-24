@@ -3,7 +3,6 @@
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps(['sound'])
-
 // type-based
 //check();
 </script>
@@ -12,7 +11,12 @@ const props = defineProps(['sound'])
     <div class="row" >
         <div class="status">•</div>
         <div class="name"><span class="number">{{ props.sound.id.toString().padStart(3,"0") }}</span> : {{ props.sound.text}}</div>  
-        <div class="actions"><button disabled >↧</button><button disabled >↥</button><button disabled >⟲</button><button disabled >⨯</button></div>
+        <div class="actions">
+            <button :disabled="!props.sound.file" >♪</button>
+            <button :disabled="props.sound.changed" >↧</button>
+            <button :disabled="!props.sound.changed" >↥</button>
+            <button :disabled="!props.sound.changed" >⟲</button>
+            <button>⨯</button></div>
     </div>
 </template>
 
@@ -20,6 +24,8 @@ const props = defineProps(['sound'])
 button{
     margin-left: 0.2rem;
     padding: 0.2rem 0.4rem;
+    width: 2rem;
+    vertical-align: middle;
 }
 .status{
     flex-direction: row;
@@ -40,7 +46,6 @@ flex:1;
     font-family: 'Courier New', Courier, monospace;
 }
 .row {
-  //border-bottom: 1px solid #888;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -50,10 +55,10 @@ flex:1;
     color: #888;
     padding:0.5rem;
     list-style: none;
-    background-color: #242424;
+    background-color: var(--nord1);
     &:nth-child(2n){
-        background-color: #282828;
-    }  
+        background-color: var(--nord2);        
+    }
 }
 .row:last-child{
   border-bottom: 0px;

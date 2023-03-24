@@ -48,14 +48,11 @@ async function startElectron() {
         if (data == EOL) {
             return;
         }
-
         process.stdout.write(Chalk.blueBright(`[electron] `) + Chalk.white(data.toString()))
     });
-
     electronProcess.stderr.on('data', data => 
         process.stderr.write(Chalk.blueBright(`[electron] `) + Chalk.white(data.toString()))
     );
-
     electronProcess.on('exit', () => stop());
 }
 
