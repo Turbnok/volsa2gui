@@ -23,8 +23,8 @@ function createWindow () {
     icon: join(__dirname, 'static/icon.png'),
     autoHideMenuBar: true,
     darkTheme:true,
-    backgroundColor: "#FF0000",
-    
+    backgroundColor: "#2e3440",
+
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: true,

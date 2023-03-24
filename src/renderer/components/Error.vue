@@ -72,15 +72,14 @@ watch(() => props.type, (pType) => {
         margin:0rem;
         display: flex;
         align-items: center;        
-        justify-content: center;
-       
+        justify-content: center;       
     }
     .infos{
         max-width: 800px;
         margin: 1rem;
         padding: 3rem;
         border: 1px solid var(--nord8);
-        background-color: rgb(255, 255, 255,0.3);
+        background-color: var(--nord3);
         border-radius: 0.5rem;
         a{
             color: var(--nord8);

@@ -38,7 +38,7 @@ function update(){
   
   <Erro v-on:close="close"  :msg="msg" :type="type"/>  
   <Menu v-on:help="help" v-on:refresh_list="refreshList" v-on:error="error"/>
-  <button @click="update"></button>
+
   <List :list="list"/>
 </template>
 <style>

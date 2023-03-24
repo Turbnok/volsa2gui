@@ -61,7 +61,7 @@ defineProps<{ list: Array<{id:Number,text:string,changed:boolean}> }>()
 .list{
   flex:1;
   overflow-y: auto;
-  padding:0rem 1rem 1rem 1rem;
+  padding:0rem 0rem 1rem 1rem;
 
 }
 .number{
