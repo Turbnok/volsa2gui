@@ -93,12 +93,25 @@ ipcMain.handle('checkvolsa', async () => {
   }).catch((error)=>false); 
 })
 ipcMain.handle('list', async () => {
-  console.log("List ?")  
-  return await execShellCommand(`${join(app.getPath('home'),'/.cargo/bin/volsa2-cli')} list`).then((list:string)=>{
-    console.log("la ???")
+  return await execShellCommand(`${join(app.getPath('home'),'/.cargo/bin/volsa2-cli')} list -a`).then((list:string)=>{
     const samples:Array<string> = list.split("\n");
+    const infos = samples.shift();
+    const spa = samples.shift()?.match(/(?<=Occupied space: )(.*)(?=%)/);
+    const space = spa ? spa[1] : 0;
+    
     samples.pop()
-    return samples;
+    
+    return {space,samples:samples.map(item=>{
+      let r:Array<string>|null = item.match(/^(.+?): (.+?) - length: (.+?), speed: (.+?), level: (.+)/);
+      
+    if(r){
+      return {id:r[1].trim(),name:r[2].trim(),length:r[3].trim(),speed:r[4].trim(), level:r[5].trim()}
+    }
+    r = item.match(/^(.+?):/);
+    if(r){
+    return {id:r[1].trim(),name:"",length:0,speed:0, level:0}
+    }
+    })};
   }).catch((error)=>{
     console.log("Error")
     return "no volca"

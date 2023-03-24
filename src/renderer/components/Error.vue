@@ -41,10 +41,10 @@ watch(() => props.type, (pType) => {
         <div>
             <p>This project is based on :</p>
             <ul>
-                <li><a href="https://github.com/00nktk/volsa2">VolSa 2</a><br/>Volsa 2 is a simple command line sample manager for KORG Volca Sample 2 that works over ALSA MIDI sequencer. It can list, upload, download and remove samples via USB.</li>    
-                <li><a href="https://www.electronjs.org/">electronjs</a><br/>Build cross-platform desktop apps with JavaScript, HTML, and CSS</li>
-                <li><a href="https://github.com/Deluze/electron-vue-template.git">electron-vue-template</a><br/>A simple starter template for a Vue3 + Electron TypeScript based application, including ViteJS and Electron Builder</li>
-                <li><a href="https://www.nordtheme.com/">nordtheme</a><br/>An arctic, north-bluish color palette.</li>
+                <li><a href="https://github.com/00nktk/volsa2" target="_blank">VolSa 2</a><br/>Volsa 2 is a simple command line sample manager for KORG Volca Sample 2 that works over ALSA MIDI sequencer. It can list, upload, download and remove samples via USB.</li>    
+                <li><a href="https://www.electronjs.org/" target="_blank">electronjs</a><br/>Build cross-platform desktop apps with JavaScript, HTML, and CSS</li>
+                <li><a href="https://github.com/Deluze/electron-vue-template.git" target="_blank">electron-vue-template</a><br/>A simple starter template for a Vue3 + Electron TypeScript based application, including ViteJS and Electron Builder</li>
+                <li><a href="https://www.nordtheme.com/" target="_blank">nordtheme</a><br/>An arctic, north-bluish color palette.</li>
             </ul>
         </div>
     </div>
@@ -96,7 +96,6 @@ watch(() => props.type, (pType) => {
         }
     }
     .container a {
-     
         text-decoration: underline;
         cursor: pointer;
     }

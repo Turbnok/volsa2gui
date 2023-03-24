@@ -18,7 +18,7 @@ watch(() => props.sound.changed, (pMsg) => {
 
 <template>
     <div class="row" >
-        <div class="status">•</div>
+        <!-- <div class="status"><div> -->
         <div class="name"><span class="number">{{ props.sound.id.toString().padStart(3,"0") }}</span> : {{ props.sound.text}}</div>  
         <div v-if="processing" class="loader" >
             <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@ button{
     align-items: center; 
 }
 .name{
-
+color: var(--nord4);
 flex:1;
 }
 .actions{

@@ -13,7 +13,7 @@ export interface Fs {
   debuge: ()=>string
 }
 export interface Volsa {
-  list: () => Array<string>|string,     
+  list: () => {space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string,     
   download: () => Array<string>,    
   upload:() => Array<string>,     
   remove: () => Array<string>,     

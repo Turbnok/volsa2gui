@@ -1,17 +1,24 @@
 <script setup lang="ts">
+import { isString } from '@vue/shared';
 import { ref } from 'vue'
 // type-based
+const props = defineProps(['percent']);
 const emit = defineEmits<{
-  (e: 'refresh_list', list: Array<string>|string): void
+  (e: 'refresh_list', list: {space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string): void
   (e: 'check', result: boolean): void
   (e: 'error', message: string): void
   (e: 'help'): void
 }>()
 async function listDirs(){
+  console.log("LISTE DIRS")
   const list = await window.volsa.list();
+  
   if(list==="no volca"){
     emit("error","Error: could not find volca sample. Is it plugged ?");
   }else{
+    if(!isString(list)){
+      space.value = list.space;
+    }    
     emit("refresh_list",list);
   }
 }
@@ -19,16 +26,18 @@ async function check(){
   const result = await window.fs.debuge();
 }
 async function help(){
+  
   emit("help");
 }
-const list = ref()
+const space = ref(0)
 </script>
 <template>
   <div class="header">
     <img class="sample2" src="/volca2.svg" alt="Sample2" />
-    <h2 class="title">Volsa2 gui</h2>
-    <div class="help"><button @click="help">?</button></div>
+    <h2 class="title">Volsa2 gui</h2><div class="help"><button @click="help">?</button></div>
+    <div class="occupied"><label for="space">space:</label><meter class="progress" id="space" low="70" high="85" :value="space" min="0" max="100" /></div>
   </div>
+  
   <div class="menu">   
     <div class="left">
       <button type="button" @click="listDirs">list</button>
@@ -40,13 +49,53 @@ const list = ref()
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
-.title{
-  flex:1,
+
+.progress{
+    border: none;
+    height: 30px;
+    margin-left: 0.5rem;
+    
+  //  appearance: none;
+    
+    border-radius: 5px;
+    
+    //background: var(--nord3);
+    &::-webkit-meter-bar{
+      border: none;
+     background: var(--nord3);
+  }
+  &::-webkit-meter-optimum-value{
+     background: var(--nord14);
+     border-radius: 5px;
+  }
+  &::-webkit-meter-suboptimum-value{
+    background: var(--nord12);
+    border-radius: 5px;
+  }
+  &::-webkit-meter-even-less-good-value{
+    border-radius: 5px;
+    background: var(--nord11);
+  }
 }
+
+.occupied{
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  
+  }  
+
+
+
 .help{
   display: flex;
   align-items: center;
+  flex:1;
   button{
     display:flex;
     padding:0;
