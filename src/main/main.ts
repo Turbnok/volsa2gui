@@ -17,12 +17,13 @@ function execShellCommand(cmd):Promise<string> {
 function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 900,
     minWidth: 600,
     minHeight: 400,
     icon: join(__dirname, 'static/icon.png'),
     autoHideMenuBar: true,
     darkTheme:true,
+    backgroundColor: "#FF0000",
     
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
@@ -35,16 +36,14 @@ function createWindow () {
   if (process.env.NODE_ENV === 'development') {
     const rendererPort = process.argv[2];
     mainWindow.loadURL(`http://localhost:${rendererPort}`);
-    //mainWindow.loadURL(`http://www.ladydinde.com`);
-    console.log("hop?" )
   }
   else {
     mainWindow.loadFile(join(app.getAppPath(), 'renderer', 'index.html'));
   }
+
    // Make all links open with the browser, not with the application
    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    console.log("URL ...", url)
-      if (url.startsWith('https:')) shell.openExternal(url)
+    if (url.startsWith('https:')) shell.openExternal(url)
         return { action: 'deny' }
     })
 

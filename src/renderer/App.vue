@@ -30,6 +30,7 @@ function error(message:string){
 }
 function update(){
   list.value[0].text = "hop"
+  //list.value[0]. = "hop"
   list.value[1].changed = true
 }
 </script>
