@@ -1,30 +1,46 @@
 <div align="center"> 
 
-# Electron Vue Template
+# Volsa2 gui
   
-<img width="794" alt="image" src="https://user-images.githubusercontent.com/32544586/222748627-ee10c9a6-70d2-4e21-b23f-001dd8ec7238.png">
-
-A simple starter template for a **Vue3** + **Electron** TypeScript based application, including **ViteJS** and **Electron Builder**.
+<img width="794" alt="image" src="./volsa2gui.png">
+A simple app for managing Volca Sample 2 files on linux
 </div>
 
 ## About
 
-This template utilizes [ViteJS](https://vitejs.dev) for building and serving your (Vue powered) front-end process, it provides Hot Reloads (HMR) to make development fast and easy ⚡ 
+⚠️ The app is build on top [VolSa 2](https://github.com/00nktk/volsa2) and will NOT work if you don't install it correctly, **Volsa2 gui** assumes `volsa2-cli` is reachable at `/home/$USER/.cargo/bin/`
 
-Building the Electron (main) process is done with [Electron Builder](https://www.electron.build/), which makes your application easily distributable and supports cross-platform compilation 😎
+protip: install `volsa2-cli` with cargo, it's easier.
 
-## Getting started
+This app is "linux only", it may compiles on windows and macos but as it uses **VolSa 2**, you can't do anything with it from window or macos.
 
-Click the green **Use this template** button on top of the repository, and clone your own newly created repository.
+The app uses `aplay` command from `alsa` to play sounds. It's not mandatory but necessary if you want to hear your samples from within the app.
 
-**Or..**
+## Usage
 
-Clone this repository: `git clone git@github.com:Deluze/electron-vue-template.git`
+1. Power up and USB plug your **Volca Sample 2**
+2. Launch the app
+3. Click "📃 list" button to get *Volca* samples list
+4. Click "📂 folder" button to select a *working directory*
+5. Click an item "↧ download" button to save sound from *Volca* to *working directory*
+6. Drag one or multiples *wav* files from your desktop on *slots*
+7. Click the "⟲ revert" button for reverting your changes
+8. Click the "♪ play" button to listen to the downloaded or new dragged sample
+9. Click the "↥ upload" button to upload sample to *volca*
+10. Click the "⨯ remove" button to empty a slot on the *volca*
+   
 
+
+
+## Developers starting guide
+The app is based on this template : [electron-vue-template](git@github.com:Turbnok/volsa2gui.git). So you can check for more informations.
+
+Clone this repository: `git clone git@github.com:Turbnok/volsa2gui.git`
 
 ### Install dependencies ⏬
 
 ```bash
+nvm use 
 npm install
 ```
 
@@ -32,44 +48,4 @@ npm install
 
 ```bash
 npm run dev
-```
-
-## Additional Commands
-
-```bash
-npm run dev # starts application with hot reload
-npm run build # builds application, distributable files can be found in "dist" folder
-
-# OR
-
-npm run build:win # uses windows as build target
-npm run build:mac # uses mac as build target
-npm run build:linux # uses linux as build target
-```
-
-Optional configuration options can be found in the [Electron Builder CLI docs](https://www.electron.build/cli.html).
-## Project Structure
-
-```bash
-- scripts/ # all the scripts used to build or serve your application, change as you like.
-- src/
-  - main/ # Main thread (Electron application source)
-  - renderer/ # Renderer thread (VueJS application source)
-```
-
-## Using static files
-
-If you have any files that you want to copy over to the app directory after installation, you will need to add those files in your `src/main/static` directory.
-
-#### Referencing static files from your main process
-
-```ts
-/* Assumes src/main/static/myFile.txt exists */
-
-import {app} from 'electron';
-import {join} from 'path';
-import {readFileSync} from 'fs';
-
-const path = join(app.getAppPath(), 'static', 'myFile.txt');
-const buffer = readFileSync(path);
 ```
