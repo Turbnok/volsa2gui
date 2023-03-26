@@ -34,7 +34,6 @@ async function download(id:number){
         element.file = result;
       }      
     });
-    //{id:v.id,text:v.name,length:v.length,speed:v.speed,changed:false,file:null}
   }
 }
 
@@ -55,10 +54,8 @@ async function upload(id:number, path:string){
         element.file = element.fileNew ??"";
         element.fileNew = null
         element.textNew = null
-
       }          
     });
-    //{id:v.id,text:v.name,length:v.length,speed:v.speed,changed:false,file:null}
   }
 }
 async function remove(id:number){

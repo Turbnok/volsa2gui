@@ -10,6 +10,7 @@ list.value = Array(200).fill(emptySound(0)).map((a,i)=>emptySound(i+1))
 const percent = ref(0);
 const msg = ref("");
 const type = ref("error");
+const directory = ref("/");
 function emptySound(pId:number){
   return {
     id: pId,
@@ -31,6 +32,19 @@ function help(){
   msg.value="help";
   type.value="infos"
 }
+function onDirectory(path:string){
+  directory.value = path;
+}
+async function sendAll(){
+  const newUploads = list.value.reduce((acc:Array<Sound>,val:Sound)=>{
+    if(val.changed){
+      acc.push(val);
+    }
+    return acc;
+  },[])
+  console.log(newUploads)
+  //window
+}
 function refreshList(pList:{space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string){
   if(isString(pList)){
     return;
@@ -46,10 +60,9 @@ function error(message:string){
 }
 </script>
 <template>
-  <Menu :percent="percent" v-on:help="help" v-on:refresh_list="refreshList" v-on:error="error"/>
-  <List :list="list"  v-on:error="error"/>
+  <Menu :percent="percent" :directory="directory" v-on:help="help" v-on:sendAll="sendAll" v-on:refresh_list="refreshList" v-on:error="error" v-on:directory="onDirectory"/>
+  <List :list="list" v-on:error="error"/>
   <Erro v-on:close="close"  :msg="msg" :type="type"/>  
 </template>
 <style>
-
 </style>

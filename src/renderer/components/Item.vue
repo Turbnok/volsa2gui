@@ -34,6 +34,7 @@ function play(){
     if(sound) window.fs.play(sound);
 }
 function upload(){
+    
     processing.value = true;
     if(props.sound.fileNew){
         emit("upload",props.sound.id,props.sound.fileNew);
@@ -51,7 +52,7 @@ watch(() => [props.sound.changed,props.sound.file,props.sound.text], (pMsg) => {
 <template>
     <div class="row" >
         <!-- <div class="status"><div> -->
-        <div class="name"><span class="number">{{ props.sound.id.toString().padStart(3,"0") }}</span> : {{ props.sound.textNew ? props.sound.textNew :props.sound.text}}<span :class="props.sound.changed?'file new':'file'" v-if="props.sound.file || props.sound.fileNew"> ({{props.sound.fileNew ?? props.sound.file}})</span></div>  
+        <div class="name"><span class="number">{{ props.sound.id.toString().padStart(3,"0") }}</span> : {{props.sound.changed?"✨":""}}{{ props.sound.textNew ? props.sound.textNew :props.sound.text}}<span :class="props.sound.changed?'file new':'file'" v-if="props.sound.file || props.sound.fileNew"> ({{props.sound.fileNew ?? props.sound.file}})</span></div>  
         <div v-if="processing" class="loader" >
             <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <!-- No dashes nor gaps -->

@@ -3,13 +3,14 @@ import {contextBridge, ipcRenderer,dialog} from 'electron';
 contextBridge.exposeInMainWorld('electronAPI', {
   openURL: (url:string) => ipcRenderer.send('openURL', url),
   sendMessage: (message:string) => ipcRenderer.send('message', message),
-  dialog:()=> ipcRenderer.send('dialog'),
+  
 })
 contextBridge.exposeInMainWorld('fs', {
   ls: async () => await ipcRenderer.invoke('ls'),     
   checkvolsa: async () => await ipcRenderer.invoke('checkvolsa'),   
   debuge: async () => await ipcRenderer.invoke('debuge'),
-  play: async (file:string) => await ipcRenderer.invoke('play',file)
+  play: async (file:string) => await ipcRenderer.invoke('play',file),
+  dialog:()=> ipcRenderer.invoke('dialog'),
 })
 contextBridge.exposeInMainWorld('volsa', {
   list: async () => await ipcRenderer.invoke('list'),     

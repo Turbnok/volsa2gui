@@ -1,8 +1,9 @@
 import {app, BrowserWindow, dialog,shell, ipcMain, session} from 'electron';
+import os from 'os';
 import {join } from 'path'
 //import Audic from 'audic';
 
-
+let workingDir = os.homedir();
 
 
 function execShellCommand(cmd):Promise<string> {
@@ -78,6 +79,18 @@ ipcMain.on('openURL', (event, url) => {
   console.log(url);
   require('electron').shell.openExternal(url);
 })
+
+ipcMain.handle('dialog', async () => {
+  
+  const savePath = await dialog.showOpenDialog(BrowserWindow.getAllWindows()[0],{
+    title:"Select a working directory",
+    buttonLabel: "Select",
+    properties: ['openDirectory']
+  });
+  if(savePath.canceled)return;
+  workingDir =  savePath.filePaths[0];
+  return workingDir;
+})
 ipcMain.handle('ls', async () => {
   return await execShellCommand("ls").then((list:string)=>{
     return list.split("\n");
@@ -87,7 +100,6 @@ ipcMain.handle('ls', async () => {
 })
 ipcMain.handle('debuge', async () => {
   console.log(app.getPath('home'))
-  //return await execShellCommand(join(app.getPath('home'),'/.cargo/bin/volsa2-cli')); 
 })
 ipcMain.handle('checkvolsa', async () => {  
   return await execShellCommand(`command -v ${join(app.getPath('home'),'/.cargo/bin/volsa2-cli')}`).then((list:string)=>{
@@ -133,11 +145,12 @@ ipcMain.handle('play', async (e,file:string) => {
   return await execShellCommand(`aplay "${file}"`).then((result:string)=>{
     return "ok";
   })
- // const audic = new Audic(file);
- // await audic.play();
 })
 ipcMain.handle('download', async (e,id:number) => {
-  return await execShellCommand(join(app.getPath('home'),`/.cargo/bin/volsa2-cli download ${id}`)).then((result:string)=>{
+  const cli = join(app.getPath('home'),`/.cargo/bin/volsa2-cli`);
+  const cmd = `cd ${workingDir} && ${cli} download ${id}` 
+
+  return await execShellCommand(cmd).then((result:string)=>{
     const lines = result.split('\n');
     return lines[2].split('"')[1];
   }).catch((error)=>{

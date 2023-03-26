@@ -28,7 +28,7 @@ watch(() => props.msg, (pMsg) => {
 watch(() => props.type, (pType) => {
     type.value = pType
 });
-//check();
+check();
 </script>
 
 <template>

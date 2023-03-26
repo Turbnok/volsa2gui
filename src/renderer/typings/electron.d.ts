@@ -24,7 +24,8 @@ export interface Fs {
   ls: () => Array<string>,
   checkvolsa: ()=>boolean,
   debuge: ()=>string
-  play: (file:string)=>string
+  play: (file:string)=>string,
+  dialog: ()=>string
 }
 export interface Volsa {
   list: () => {space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string,     
