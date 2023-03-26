@@ -16,6 +16,8 @@ This app is "linux only", it may compiles on windows and macos but as it uses **
 
 The app uses `aplay` command from `alsa` to play sounds. It's not mandatory but necessary if you want to hear your samples from within the app.
 
+Feel free to submit pull requests or suggestions. Be warned, the code is a ~~total mess~~ personnal project.
+
 ## Usage
 
 1. Power up and USB plug your **Volca Sample 2**
@@ -28,7 +30,20 @@ The app uses `aplay` command from `alsa` to play sounds. It's not mandatory but 
 8. Click the "♪ play" button to listen to the downloaded or new dragged sample
 9. Click the "↥ upload" button to upload sample to *volca*
 10. Click the "⨯ remove" button to empty a slot on the *volca*
-   
+
+Don't try to upload some weird things as PDF files or PNG... Use it at your own risk !
+
+## Todos
+
+- [ ] Bulk upload
+- [ ] Bulk download
+- [ ] Test files format
+- [ ] Add mono/left/right option
+- [ ] .desktop file for deb
+- [ ] Save last folder
+- [ ] Settings
+- [ ] Clean...
+- [ ] Comments
 
 
 

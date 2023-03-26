@@ -13,7 +13,7 @@
         "target": "nsis"
     },
     "linux":  {
-        "target": ["deb"],
+        "target": ["appimage","deb"],
         "icon" : "../src/icns/volsa2gui.icns"
     },
     "files": [
