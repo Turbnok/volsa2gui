@@ -1,5 +1,8 @@
 import {app, BrowserWindow, dialog,shell, ipcMain, session} from 'electron';
 import {join } from 'path'
+//import Audic from 'audic';
+
+
 
 
 function execShellCommand(cmd):Promise<string> {
@@ -24,7 +27,6 @@ function createWindow () {
     autoHideMenuBar: true,
     darkTheme:true,
     backgroundColor: "#2e3440",
-
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       nodeIntegration: true,
@@ -112,6 +114,42 @@ ipcMain.handle('list', async () => {
     return {id:r[1].trim(),name:"",length:0,speed:0, level:0}
     }
     })};
+  }).catch((error)=>{
+    console.log("Error")
+    return "no volca"
+  }); 
+})
+
+ipcMain.handle('remove', async (e,id:number) => {
+  return await execShellCommand(join(app.getPath('home'),`/.cargo/bin/volsa2-cli remove ${id}`)).then((result:string)=>{
+    return "ok"
+  }).catch((error)=>{
+    console.log("Error")
+    return "no volca"
+  }); 
+})
+
+ipcMain.handle('play', async (e,file:string) => {
+  return await execShellCommand(`aplay "${file}"`).then((result:string)=>{
+    return "ok";
+  })
+ // const audic = new Audic(file);
+ // await audic.play();
+})
+ipcMain.handle('download', async (e,id:number) => {
+  return await execShellCommand(join(app.getPath('home'),`/.cargo/bin/volsa2-cli download ${id}`)).then((result:string)=>{
+    const lines = result.split('\n');
+    return lines[2].split('"')[1];
+  }).catch((error)=>{
+    console.log("Error")
+    return "no volca"
+  }); 
+})
+ipcMain.handle('upload', async (e,id:number, path:string) => {
+  console.log("upload, ", id, path);
+  return await execShellCommand(join(app.getPath('home'),`/.cargo/bin/volsa2-cli upload "${path}" ${id}`)).then((result:string)=>{
+    const lines = result.split('\n');
+    return lines[2].split('"')[1];
   }).catch((error)=>{
     console.log("Error")
     return "no volca"

@@ -10,9 +10,7 @@ const emit = defineEmits<{
   (e: 'help'): void
 }>()
 async function listDirs(){
-  console.log("LISTE DIRS")
   const list = await window.volsa.list();
-  
   if(list==="no volca"){
     emit("error","Error: could not find volca sample. Is it plugged ?");
   }else{
@@ -41,11 +39,11 @@ const space = ref(0)
   <div class="menu">   
     <div class="left">
       <button type="button" @click="listDirs">list</button>
-      <button type="button" @click="listDirs">send</button>
+      <!-- <button type="button" @click="listDirs">send</button> -->
     </div>
     <div class="right">
-      <button type="button" >clear all</button>
-      <button type="button" @click="check">check</button>
+      <!-- <button type="button" >clear all</button> -->
+      <!-- <button type="button" @click="check">check</button> -->
     </div>
   </div>
 </template>

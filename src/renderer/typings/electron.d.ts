@@ -6,17 +6,31 @@ export default interface ElectronApi {
   openURL: (url: string) => void,
   dialog:()=>void
 }
+export interface Sound {
+  id: number;
+  text: string;
+  length:number;
+  level:string;
+  speed:number;
+  file:string|null;
+  changed:boolean;
+  sync:boolean;
+  fileNew:string|null;
+  textNew:string|null;
+}
+ 
 /** FS as FileSystem */
 export interface Fs {
   ls: () => Array<string>,
   checkvolsa: ()=>boolean,
   debuge: ()=>string
+  play: (file:string)=>string
 }
 export interface Volsa {
   list: () => {space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string,     
-  download: () => Array<string>,    
-  upload:() => Array<string>,     
-  remove: () => Array<string>,     
+  download: (id:number) => string,  
+  upload:(id:number,path:string) => string,     
+  remove: (id:number) => string,     
 }
 
 
