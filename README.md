@@ -38,13 +38,13 @@ Don't try to upload some weird things as PDF files or PNG... Use it at your own 
 - [ ] Bulk upload
 - [ ] Bulk download
 - [ ] Test files format
+- [ ] Samples size and duration
 - [ ] Add mono/left/right option
 - [ ] .desktop file for deb
 - [ ] Save last folder
 - [ ] Settings
 - [ ] Clean...
 - [ ] Comments
-
 
 
 ## Developers starting guide
