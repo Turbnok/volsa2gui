@@ -1,45 +1,57 @@
 <script setup lang="ts">
 //import package from '../../../package.json';
-import {version} from '../../../package.json';
-import { isString } from '@vue/shared';
-import { ref } from 'vue'
+import { version } from "../../../package.json";
+import { isString } from "@vue/shared";
+import { ref } from "vue";
 
 // type-based
-const props = defineProps(['percent','directory']);
+const props = defineProps(["percent", "directory"]);
 const emit = defineEmits<{
-  (e: 'refresh_list', list: {space:number,samples:Array<{id:number;name:string;length:number;speed:number}>}|string): void
-  (e: 'check', result: boolean): void
-  (e: 'error', message: string): void
-  (e: 'directory', path: string): void
-  (e: 'help'): void
-  (e: 'sendAll'):void
-}>()
-async function chooseFolder(){
+  (
+    e: "refresh_list",
+    list:
+      | {
+          space: number;
+          samples: Array<{
+            id: number;
+            name: string;
+            length: number;
+            speed: number;
+          }>;
+        }
+      | string
+  ): void;
+  (e: "check", result: boolean): void;
+  (e: "error", message: string): void;
+  (e: "directory", path: string): void;
+  (e: "help"): void;
+  (e: "sendAll"): void;
+}>();
+async function chooseFolder() {
   const list = await window.fs.dialog();
-  if(list){
-    emit("directory",list);
+  if (list) {
+    emit("directory", list);
   }
-  
 }
-async function listDirs(){
+async function listDirs() {
   const list = await window.volsa.list();
-  if(list==="no volca"){
-    emit("error","Error: could not find volca sample. Is it plugged ?");
-  }else{
-    if(!isString(list)){
+  if (list === "no volca") {
+    emit("error", "Error: could not find volca sample. Is it plugged ?");
+  } else {
+    if (!isString(list)) {
       space.value = list.space;
-    }    
-    emit("refresh_list",list);
+    }
+    emit("refresh_list", list);
   }
 }
-async function sendAll(){
-  emit("sendAll")
+async function sendAll() {
+  emit("sendAll");
 }
 
-async function help(){  
+async function help() {
   emit("help");
 }
-const space = ref(0)
+const space = ref(0);
 </script>
 <template>
   <div class="header">
@@ -50,13 +62,21 @@ const space = ref(0)
     </div>
     <div class="occupied">
       <label for="space">space:</label>
-      <meter class="progress" id="space" low="70" high="85" :value="space" min="0" max="100" />
+      <meter
+        class="progress"
+        id="space"
+        low="70"
+        high="85"
+        :value="space"
+        min="0"
+        max="100"
+      />
     </div>
   </div>
-  
-  <div class="menu">   
+
+  <div class="menu">
     <div class="left">
-      <button type="button" @click="chooseFolder" >📂</button>
+      <button type="button" @click="chooseFolder">📂</button>
       <div class="folder">
         <span>Working folder</span>
         <span>{{ props.directory }}</span>
@@ -71,99 +91,92 @@ const space = ref(0)
 </template>
 
 <style scoped lang="scss">
-
-.progress{
+.progress {
   border: none;
   height: 30px;
   margin-left: 0.5rem;
   border-radius: 5px;
-  &::-webkit-meter-bar{
+  &::-webkit-meter-bar {
     border: none;
     background: var(--nord3);
   }
-  &::-webkit-meter-optimum-value{
-     background: var(--nord14);
-     border-radius: 5px;
+  &::-webkit-meter-optimum-value {
+    background: var(--nord14);
+    border-radius: 5px;
   }
-  &::-webkit-meter-suboptimum-value{
+  &::-webkit-meter-suboptimum-value {
     background: var(--nord12);
     border-radius: 5px;
   }
-  &::-webkit-meter-even-less-good-value{
+  &::-webkit-meter-even-less-good-value {
     border-radius: 5px;
     background: var(--nord11);
   }
 }
 
-.occupied{
-  
+.occupied {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   font-size: 0.8rem;
-  
-  }  
+}
 
-
-.folder{
+.folder {
   display: flex;
   flex-direction: column;
 }
-.help{
+.help {
   display: flex;
   align-items: center;
   font-size: 0.8rem;
-  flex:1;
-  button{
-    display:flex;
-    padding:0;
-    height:20px;
-    width:20px;
-    justify-content:center;
-    align-items:center;
+  flex: 1;
+  button {
+    display: flex;
+    padding: 0;
+    height: 20px;
+    width: 20px;
+    justify-content: center;
+    align-items: center;
     border-radius: 100%;
   }
 }
-.header{
-  padding:0rem 1rem;
+.header {
+  padding: 0rem 1rem;
   display: flex;
   flex-direction: row;
 }
-.sample2{
+.sample2 {
   width: 75px;
 }
-h2{
-  padding:0rem 1rem;
+h2 {
+  padding: 0rem 1rem;
 }
-.menu{
+.menu {
   box-sizing: border-box;
   padding: 1rem;
   display: flex;
   align-items: flex-end;
 }
-.left{
+.left {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  span{
-    
-    color:var(--nord9);
-    font-size:0.8rem;
+  span {
+    color: var(--nord9);
+    font-size: 0.8rem;
   }
 }
-.right{
-  display:flex;
-  flex:1;
+.right {
+  display: flex;
+  flex: 1;
   justify-content: flex-end;
   align-items: flex-end;
 }
-button{
+button {
   margin-right: 0.5rem;
 }
-button:last-child{
+button:last-child {
   margin-right: 0rem;
-
 }
-
 </style>

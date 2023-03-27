@@ -17,14 +17,20 @@
     "url": "https://github.com/Turbnok"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/cli": "^5.0.8",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
     "electron": "^22.0.2",
     "electron-builder": "^23.6.0",
+    "eslint": "^8.36.0",
+    "eslint-plugin-vue": "^9.10.0",
+    "prettier": "^2.8.7",
     "typescript": "^4.8.4",
-    "vite": "^4.0.4"
+    "vite": "^4.0.4",
+    "vue-eslint-parser": "^9.1.0"
   },
   "dependencies": {
     "sass": "^1.59.3",
