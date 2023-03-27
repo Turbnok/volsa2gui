@@ -1,5 +1,5 @@
 :root {
-   
+
   --nord0: #2e3440;
   --nord1: #3b4252;
   --nord2: #434c5e;
@@ -26,18 +26,18 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  user-select: none; 
+  user-select: none;
 }
 
 *::-webkit-scrollbar {
-  width:1rem;  
+  width:1rem;
 }
 *::-webkit-scrollbar-corner {
   background-color:var(--nord8);
@@ -65,7 +65,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--nord10);  
+  color: var(--nord10);
 }
 
 body {

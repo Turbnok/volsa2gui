@@ -1,38 +1,37 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-console.log("lapo");
-const props = defineProps(["msg", "type"]);
+import { ref, watch } from "vue"
+const props = defineProps(["msg", "type"])
 // type-based
 const emit = defineEmits<{
-  (e: "close"): void;
-}>();
+  (e: "close"): void
+}>()
 async function check() {
-  volsa.value = await window.fs.checkvolsa();
+  volsa.value = await window.fs.checkvolsa()
 }
-function onVolsa(e: any) {
-  e.preventDefault();
-  window.electronAPI.openURL("https://github.com/00nktk/volsa2");
+function onVolsa(e: MouseEvent) {
+  e.preventDefault()
+  window.electronAPI.openURL("https://github.com/00nktk/volsa2")
 }
-const volsa = ref(true);
-const msg = ref("");
-const type = ref("error");
+const volsa = ref(true)
+const msg = ref("")
+const type = ref("error")
 function close() {
-  emit("close");
-  msg.value = "";
+  emit("close")
+  msg.value = ""
 }
 watch(
   () => props.msg,
   (pMsg) => {
-    msg.value = pMsg;
+    msg.value = pMsg
   }
-);
+)
 watch(
   () => props.type,
   (pType) => {
-    type.value = pType;
+    type.value = pType
   }
-);
-check();
+)
+check()
 </script>
 
 <template>
@@ -42,44 +41,27 @@ check();
       <h2><img class="sample2" src="/volca2.svg" alt="Sample2" />Volsa2 gui</h2>
       <h3>
         a gui for VolSa 2 by
-        <a href="https://github.com/00nktk/volsa2" target="_blank"
-          >Nikita/00nkt</a
-        >
+        <a href="https://github.com/00nktk/volsa2" target="_blank">Nikita/00nkt</a>
       </h3>
       <h4></h4>
       <div>
         <p>This project is based on :</p>
         <ul>
           <li>
-            <a href="https://github.com/00nktk/volsa2" target="_blank"
-              >VolSa 2</a
-            ><br />Volsa 2 is a simple command line sample manager for KORG
-            Volca Sample 2 that works over ALSA MIDI sequencer. It can list,
-            upload, download and remove samples via USB.
+            <a href="https://github.com/00nktk/volsa2" target="_blank">VolSa 2</a><br />Volsa 2 is a simple command line sample manager for KORG Volca Sample 2 that works over ALSA MIDI sequencer. It
+            can list, upload, download and remove samples via USB.
           </li>
+          <li><a href="https://www.electronjs.org/" target="_blank">electronjs</a><br />Build cross-platform desktop apps with JavaScript, HTML, and CSS</li>
           <li>
-            <a href="https://www.electronjs.org/" target="_blank">electronjs</a
-            ><br />Build cross-platform desktop apps with JavaScript, HTML, and
-            CSS
+            <a href="https://github.com/Deluze/electron-vue-template.git" target="_blank">electron-vue-template</a><br />A simple starter template for a Vue3 + Electron TypeScript based application,
+            including ViteJS and Electron Builder
           </li>
-          <li>
-            <a
-              href="https://github.com/Deluze/electron-vue-template.git"
-              target="_blank"
-              >electron-vue-template</a
-            ><br />A simple starter template for a Vue3 + Electron TypeScript
-            based application, including ViteJS and Electron Builder
-          </li>
-          <li>
-            <a href="https://www.nordtheme.com/" target="_blank">nordtheme</a
-            ><br />An arctic, north-bluish color palette.
-          </li>
+          <li><a href="https://www.nordtheme.com/" target="_blank">nordtheme</a><br />An arctic, north-bluish color palette.</li>
         </ul>
       </div>
     </div>
     <div :class="type" v-if="!volsa">
-      Error : volsa2-cli is not installed or not in
-      `/home/$USER/.cargo/bin/volsa2-cli`, please check
+      Error : volsa2-cli is not installed or not in `/home/$USER/.cargo/bin/volsa2-cli`, please check
       <a @click="onVolsa">https://github.com/00nktk/volsa2</a> README.md
     </div>
   </div>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Sound } from "./typings/electron";
-import Menu from "./components/Menu.vue";
-import List from "./components/List.vue";
-import Erro from "./components/Error.vue";
-import { isString } from "@vue/shared";
-const list = ref();
+import { ref } from "vue"
+import { Sound } from "./typings/electron"
+import Menu from "./components/Menu.vue"
+import List from "./components/List.vue"
+import Erro from "./components/Error.vue"
+import { isString } from "@vue/shared"
+const list = ref()
 list.value = Array(200)
   .fill(emptySound(0))
-  .map((a, i) => emptySound(i + 1));
-const percent = ref(0);
-const msg = ref("");
-const type = ref("error");
-const directory = ref("/");
+  .map((a, i) => emptySound(i + 1))
+const percent = ref(0)
+const msg = ref("")
+const type = ref("error")
+const directory = ref("/")
 function emptySound(pId: number) {
   return {
     id: pId,
@@ -24,46 +24,45 @@ function emptySound(pId: number) {
     textNew: null,
     fileNew: null,
     changed: false,
-  };
+  }
 }
 function close() {
-  msg.value = "";
-  type.value = "error";
+  msg.value = ""
+  type.value = "error"
 }
 function help() {
-  msg.value = "help";
-  type.value = "infos";
+  msg.value = "help"
+  type.value = "infos"
 }
 function onDirectory(path: string) {
-  directory.value = path;
+  directory.value = path
 }
 async function sendAll() {
   const newUploads = list.value.reduce((acc: Array<Sound>, val: Sound) => {
     if (val.changed) {
-      acc.push(val);
+      acc.push(val)
     }
-    return acc;
-  }, []);
-  console.log(newUploads);
-  //window
+    return acc
+  }, [])
+  console.log(newUploads)
 }
 function refreshList(
   pList:
     | {
-        space: number;
+        space: number
         samples: Array<{
-          id: number;
-          name: string;
-          length: number;
-          speed: number;
-        }>;
+          id: number
+          name: string
+          length: number
+          speed: number
+        }>
       }
     | string
 ) {
   if (isString(pList)) {
-    return;
+    return
   } else {
-    percent.value = pList.space;
+    percent.value = pList.space
     pList.samples.forEach((v, i) => {
       list.value[v.id - 1] = {
         id: v.id,
@@ -76,25 +75,17 @@ function refreshList(
         file: null,
         sync: true,
         level: 0,
-      };
-    });
+      }
+    })
   }
 }
 function error(message: string) {
-  msg.value = message;
+  msg.value = message
 }
 </script>
 <template>
-  <Menu
-    :percent="percent"
-    :directory="directory"
-    v-on:help="help"
-    v-on:sendAll="sendAll"
-    v-on:refresh_list="refreshList"
-    v-on:error="error"
-    v-on:directory="onDirectory"
-  />
-  <List :list="list" v-on:error="error" />
-  <Erro v-on:close="close" :msg="msg" :type="type" />
+  <Menu :percent="percent" :directory="directory" @help="help" @sendAll="sendAll" @refresh_list="refreshList" @error="error" @directory="onDirectory" />
+  <List :list="list" @error="error" />
+  <Erro @close="close" :msg="msg" :type="type" />
 </template>
 <style></style>

@@ -1,57 +1,55 @@
 <script setup lang="ts">
-//import package from '../../../package.json';
-import { version } from "../../../package.json";
-import { isString } from "@vue/shared";
-import { ref } from "vue";
+import { isString } from "@vue/shared"
+import { ref } from "vue"
 
 // type-based
-const props = defineProps(["percent", "directory"]);
+const props = defineProps(["percent", "directory"])
 const emit = defineEmits<{
   (
     e: "refresh_list",
     list:
       | {
-          space: number;
+          space: number
           samples: Array<{
-            id: number;
-            name: string;
-            length: number;
-            speed: number;
-          }>;
+            id: number
+            name: string
+            length: number
+            speed: number
+          }>
         }
       | string
-  ): void;
-  (e: "check", result: boolean): void;
-  (e: "error", message: string): void;
-  (e: "directory", path: string): void;
-  (e: "help"): void;
-  (e: "sendAll"): void;
-}>();
+  ): void
+  (e: "check", result: boolean): void
+  (e: "error", message: string): void
+  (e: "directory", path: string): void
+  (e: "help"): void
+  (e: "sendAll"): void
+}>()
 async function chooseFolder() {
-  const list = await window.fs.dialog();
+  const list = await window.fs.dialog()
   if (list) {
-    emit("directory", list);
+    emit("directory", list)
   }
 }
 async function listDirs() {
-  const list = await window.volsa.list();
+  const list = await window.volsa.list()
   if (list === "no volca") {
-    emit("error", "Error: could not find volca sample. Is it plugged ?");
+    emit("error", "Error: could not find volca sample. Is it plugged ?")
   } else {
     if (!isString(list)) {
-      space.value = list.space;
+      space.value = list.space
     }
-    emit("refresh_list", list);
+    emit("refresh_list", list)
   }
 }
 async function sendAll() {
-  emit("sendAll");
+  emit("sendAll")
 }
 
 async function help() {
-  emit("help");
+  emit("help")
 }
-const space = ref(0);
+const space = ref(0)
 </script>
 <template>
   <div class="header">
@@ -62,15 +60,7 @@ const space = ref(0);
     </div>
     <div class="occupied">
       <label for="space">space:</label>
-      <meter
-        class="progress"
-        id="space"
-        low="70"
-        high="85"
-        :value="space"
-        min="0"
-        max="100"
-      />
+      <meter class="progress" id="space" low="70" high="85" :value="space" min="0" max="100" />
     </div>
   </div>
 
@@ -84,7 +74,7 @@ const space = ref(0);
       <!-- <button type="button" @click="listDirs">send</button> -->
     </div>
     <div class="right">
-      <!-- <button type="button" @click="sendAll">📨 send</button> -->
+      <button type="button" @click="sendAll">📨 send</button>
       <button type="button" @click="listDirs">📃 list</button>
     </div>
   </div>

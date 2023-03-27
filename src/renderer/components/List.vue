@@ -1,82 +1,82 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import type { Ref } from "vue";
+import { ref } from "vue"
+import type { Ref } from "vue"
 
-import Item from "./Item.vue";
-import { Sound } from "../typings/electron";
+import Item from "./Item.vue"
+import { Sound } from "../typings/electron"
 interface Props {
-  list: Array<Sound>;
+  list: Array<Sound>
 }
-const $items: Ref<HTMLElement | null> = ref(null);
-const $drop: Ref<HTMLElement | null> = ref(null);
+const $items: Ref<HTMLElement | null> = ref(null)
+const $drop: Ref<HTMLElement | null> = ref(null)
 
-const props = defineProps<Props>();
-const drop = ref(false);
-const dropId = ref(0);
-const dropzone = ref(false);
-const offsetY = ref(0);
+const props = defineProps<Props>()
+const drop = ref(false)
+const dropId = ref(0)
+const dropzone = ref(false)
+const offsetY = ref(0)
 const emit = defineEmits<{
-  (e: "error", message: string): void;
-}>();
+  (e: "error", message: string): void
+}>()
 
 async function download(id: number) {
-  const result = await window.volsa.download(id);
+  const result = await window.volsa.download(id)
   if (result === "no volca") {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.changed = true;
+        element.changed = true
       }
-    });
-    emit("error", "Error: could not find volca sample. Is it plugged ?");
+    })
+    emit("error", "Error: could not find volca sample. Is it plugged ?")
   } else {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.file = result;
+        element.file = result
       }
-    });
+    })
   }
 }
 
 async function upload(id: number, path: string) {
-  const result = await window.volsa.upload(id, path);
+  const result = await window.volsa.upload(id, path)
   if (result === "no volca") {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.changed = true;
+        element.changed = true
       }
-    });
-    emit("error", "Error: could not find volca sample. Is it plugged ?");
+    })
+    emit("error", "Error: could not find volca sample. Is it plugged ?")
   } else {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.text = element.textNew ?? "";
-        element.changed = false;
-        element.file = element.fileNew ?? "";
-        element.fileNew = null;
-        element.textNew = null;
+        element.text = element.textNew ?? ""
+        element.changed = false
+        element.file = element.fileNew ?? ""
+        element.fileNew = null
+        element.textNew = null
       }
-    });
+    })
   }
 }
 async function remove(id: number) {
-  const result = await window.volsa.remove(id);
+  const result = await window.volsa.remove(id)
   if (result === "no volca") {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.changed = true;
+        element.changed = true
       }
-    });
-    emit("error", "Error: could not find volca sample. Is it plugged ?");
+    })
+    emit("error", "Error: could not find volca sample. Is it plugged ?")
   } else {
     props.list.forEach((element: Sound) => {
       if (element.id === id) {
-        element.text = "";
-        element.length = 0;
-        element.speed = 0;
-        element.changed = true;
-        element.file = "";
+        element.text = ""
+        element.length = 0
+        element.speed = 0
+        element.changed = true
+        element.file = ""
       }
-    });
+    })
     //{id:v.id,text:v.name,length:v.length,speed:v.speed,changed:false,file:null}
   }
 }
@@ -85,31 +85,28 @@ document.addEventListener('dragexit',(e:any)=>{
   console.log("on Drag Exit")
   drop.value = false;
 })*/
-function onDragLeave(e: any) {
-  e.preventDefault();
-
-  console.log("on Drag Leave");
-
-  drop.value = false;
+function onDragLeave(e: DragEvent) {
+  e.preventDefault()
+  drop.value = false
 }
 
-document.addEventListener("mouseleave", (e: any) => {
-  e.preventDefault();
+document.addEventListener("mouseleave", (e: MouseEvent) => {
+  e.preventDefault()
 
-  dropzone.value = true;
-});
-document.addEventListener("mouseenter", (e: any) => {
-  e.preventDefault();
+  dropzone.value = true
+})
+document.addEventListener("mouseenter", (e: MouseEvent) => {
+  e.preventDefault()
 
-  dropzone.value = false;
-});
-function onDragEnter(e: any) {
-  e.preventDefault();
+  dropzone.value = false
+})
+function onDragEnter(e: DragEvent) {
+  e.preventDefault()
 
-  drop.value = true;
+  drop.value = true
 
-  let nbItems = e.dataTransfer?.items?.length ?? 0;
-  console.log("ITEMS", nbItems);
+  const nbItems = e.dataTransfer?.items?.length ?? 0
+  console.log("ITEMS", nbItems)
 
   for (let f = 0; f < nbItems; f++) {
     // Using the path attribute to get absolute file path
@@ -117,39 +114,35 @@ function onDragEnter(e: any) {
     //console.log('File Path of dragged files: ', f)
   }
 }
-function onMove(e: any) {
-  e.preventDefault();
+function onMove(e: DragEvent) {
+  e.preventDefault()
   if ($items.value) {
-    dropId.value = Math.floor(
-      (e.clientY - ($items.value.offsetTop - $items.value.scrollTop)) / 43
-    );
-    offsetY.value = dropId.value * 43;
+    dropId.value = Math.floor((e.clientY - ($items.value.offsetTop - $items.value.scrollTop)) / 43)
+    offsetY.value = dropId.value * 43
   }
-  let nbItems = e.dataTransfer?.items?.length ?? 0;
+  const nbItems = e.dataTransfer?.items?.length ?? 0
   if ($drop.value) {
-    $drop.value.style.top = `${offsetY.value}px`;
-    $drop.value.style.height = `${nbItems * 43}px`;
+    $drop.value.style.top = `${offsetY.value}px`
+    $drop.value.style.height = `${nbItems * 43}px`
   }
 }
 function onDrop(e: DragEvent) {
-  drop.value = false;
-  const files: FileList | undefined = e.dataTransfer?.files;
-  const nbItems = e.dataTransfer?.files.length ?? 0;
+  drop.value = false
+  const files: FileList | undefined = e.dataTransfer?.files
+  const nbItems = e.dataTransfer?.files.length ?? 0
   if ($items.value) {
-    dropId.value = Math.floor(
-      (e.clientY - ($items.value.offsetTop - $items.value.scrollTop)) / 43
-    );
+    dropId.value = Math.floor((e.clientY - ($items.value.offsetTop - $items.value.scrollTop)) / 43)
   }
   if (files) {
     for (let i = 0; i < nbItems; i++) {
-      const index = dropId.value + i;
-      if (index > 199) continue;
-      const file: File | null = files.item(i);
+      const index = dropId.value + i
+      if (index > 199) continue
+      const file: File | null = files.item(i)
       if (file) {
         if (file.path) {
-          props.list[index].fileNew = file.path;
-          props.list[index].textNew = file.name;
-          props.list[index].changed = true;
+          props.list[index].fileNew = file.path
+          props.list[index].textNew = file.name
+          props.list[index].changed = true
         }
       }
     }
@@ -166,7 +159,7 @@ function onDrop(e: DragEvent) {
     console.log(event.dataTransfer?.items)
 
 });
-  
+
  document.addEventListener('dragenter', (event) => {
      console.log('File is in the Drop Space');
      drop.value = true;
@@ -191,21 +184,8 @@ function onDrop(e: DragEvent) {
 <template>
   <div ref="$items" class="list">
     <div class="items">
-      <Item
-        v-on:remove="remove"
-        v-on:upload="upload"
-        v-on:download="download"
-        v-for="(i, n) in 200"
-        :sound="list[n]"
-        :key="`sound${n}`"
-      />
-      <div
-        :class="dropzone ? 'dropzone no' : 'dropzone'"
-        @dragenter.self="onDragEnter"
-        @dragleave.self="onDragLeave"
-        @dragover.self="onMove"
-        @drop="onDrop"
-      ></div>
+      <Item @remove="remove" @upload="upload" @download="download" v-for="(i, n) in 200" :sound="list[n]" :key="`sound${n}`" />
+      <div :class="dropzone ? 'dropzone no' : 'dropzone'" @dragenter.self="onDragEnter" @dragleave.self="onDragLeave" @dragover.self="onMove" @drop="onDrop"></div>
     </div>
     <div ref="$drop" v-if="drop" class="drop"></div>
   </div>
