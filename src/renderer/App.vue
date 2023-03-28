@@ -5,7 +5,9 @@ import Menu from "./components/Menu.vue"
 import List from "./components/List.vue"
 import Erro from "./components/Error.vue"
 import { isString } from "@vue/shared"
+
 const list = ref()
+
 list.value = Array(200)
   .fill(emptySound(0))
   .map((a, i) => emptySound(i + 1))
@@ -63,7 +65,7 @@ function refreshList(
     return
   } else {
     percent.value = pList.space
-    pList.samples.forEach((v, i) => {
+    pList.samples.forEach((v) => {
       list.value[v.id - 1] = {
         id: v.id,
         text: v.name,
