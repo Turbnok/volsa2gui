@@ -1,55 +1,27 @@
 <script setup lang="ts">
-import { isString } from "@vue/shared"
+import { storeToRefs } from "pinia"
 import { ref } from "vue"
+import { useSamplesStore } from "../stores/samplesStore"
+const directory = ref("/")
+const store = useSamplesStore()
+const { space } = storeToRefs(store)
 
-// type-based
-const props = defineProps(["percent", "directory"])
+const props = defineProps(["directory"])
 const emit = defineEmits<{
-  (
-    e: "refresh_list",
-    list:
-      | {
-          space: number
-          samples: Array<{
-            id: number
-            name: string
-            length: number
-            speed: number
-          }>
-        }
-      | string
-  ): void
-  (e: "check", result: boolean): void
   (e: "error", message: string): void
   (e: "directory", path: string): void
   (e: "help"): void
-  (e: "sendAll"): void
 }>()
 async function chooseFolder() {
-  const list = await window.fs.dialog()
-  if (list) {
-    emit("directory", list)
+  const d = await window.fs.dialog()
+  if (d) {
+    directory.value = d
   }
-}
-async function listDirs() {
-  const list = await window.volsa.list()
-  if (list === "no volca") {
-    emit("error", "Error: could not find volca sample. Is it plugged ?")
-  } else {
-    if (!isString(list)) {
-      space.value = list.space
-    }
-    emit("refresh_list", list)
-  }
-}
-async function sendAll() {
-  emit("sendAll")
 }
 
 async function help() {
   emit("help")
 }
-const space = ref(0)
 </script>
 <template>
   <div class="header">
@@ -69,13 +41,13 @@ const space = ref(0)
       <button type="button" @click="chooseFolder">📂</button>
       <div class="folder">
         <span>Working folder</span>
-        <span>{{ props.directory }}</span>
+        <span>{{ directory }}</span>
       </div>
       <!-- <button type="button" @click="listDirs">send</button> -->
     </div>
     <div class="right">
-      <button type="button" @click="sendAll">📨 send</button>
-      <button type="button" @click="listDirs">📃 list</button>
+      <!--<button type="button" @click="sendAll">📨 send</button>-->
+      <button type="button" @click="store.getSamples()">📃 list</button>
     </div>
   </div>
 </template>

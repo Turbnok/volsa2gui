@@ -8,9 +8,10 @@ export default interface ElectronApi {
 }
 export interface Sound {
   id: number
+  processing: boolean
   text: string
   length: number
-  level: string
+  level: number
   speed: number
   file: string | null
   changed: boolean
@@ -21,14 +22,11 @@ export interface Sound {
 
 /** FS as FileSystem */
 export interface Fs {
-  ls: () => Array<string>
-  checkvolsa: () => boolean
-  debuge: () => string
   play: (file: string) => string
   dialog: () => string
 }
 export interface Volsa {
-  list: () =>
+  list: () => Promise<
     | {
         space: number
         samples: Array<{
@@ -39,9 +37,10 @@ export interface Volsa {
         }>
       }
     | string
-  download: (id: number) => string
-  upload: (id: number, path: string) => string
-  remove: (id: number) => string
+  >
+  download: (id: number) => Promise<string>
+  upload: (id: number, path: string) => Promise<string>
+  erase: (id: number) => Promise<string>
 }
 
 declare global {

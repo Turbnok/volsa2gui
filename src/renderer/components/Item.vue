@@ -1,49 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from "vue"
 import { Sound } from "../typings/electron"
+import { useSamplesStore } from "../stores/samplesStore"
+const store = useSamplesStore()
 
 interface Props {
   sound: Sound
 }
-
 const props = defineProps<Props>()
-const emit = defineEmits<{
-  (e: "remove", id: number): void
-  (e: "download", id: number): void
-  (e: "upload", id: number, path: string): void
-  (e: "play", file: string): void
-  (e: "reset"): void
-}>()
-const processing = ref(false)
-function reset() {
-  props.sound.fileNew = props.sound.textNew = null
-  props.sound.changed = false
-}
 
-function remove() {
-  processing.value = true
-  emit("remove", props.sound.id)
-}
 function play() {
   const sound = props.sound.fileNew ? props.sound.fileNew : props.sound.file
   if (sound) window.fs.play(sound)
 }
-function upload() {
-  processing.value = true
-  if (props.sound.fileNew) {
-    emit("upload", props.sound.id, props.sound.fileNew)
-  }
-}
-function dowload() {
-  processing.value = true
-  emit("download", props.sound.id)
-}
-watch(
-  () => [props.sound.changed, props.sound.file, props.sound.text],
-  () => {
-    processing.value = false
-  }
-)
 </script>
 <template>
   <div class="row">
@@ -52,17 +20,17 @@ watch(
       : {{ props.sound.changed ? "✨" : "" }}{{ props.sound.textNew ? props.sound.textNew : props.sound.text
       }}<span :class="props.sound.changed ? 'file new' : 'file'" v-if="props.sound.file || props.sound.fileNew"> ({{ props.sound.fileNew ?? props.sound.file }})</span>
     </div>
-    <div v-if="processing" class="loader">
+    <div v-if="props.sound.processing" class="loader">
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <rect width="20" height="20" />
       </svg>
     </div>
     <div class="actions">
       <button :disabled="!props.sound.file && !props.sound.fileNew" @click="play">♪</button>
-      <button :disabled="!props.sound.text || !props.sound.sync || props.sound.file || props.sound.fileNew" @click="dowload">↧</button>
-      <button :disabled="!props.sound.fileNew" @click="upload">↥</button>
-      <button :disabled="!props.sound.changed" @click="reset">⟲</button>
-      <button :disabled="!props.sound.sync || !props.sound.text" @click="remove">⨯</button>
+      <button :disabled="!props.sound.text || !props.sound.sync || props.sound.file || props.sound.fileNew" @click="store.download(props.sound.id)">↧</button>
+      <button :disabled="!props.sound.fileNew" @click="store.upload(props.sound.id, props.sound.fileNew)">↥</button>
+      <button :disabled="!props.sound.changed" @click="store.revert(props.sound.id)">⟲</button>
+      <button :disabled="!props.sound.sync || !props.sound.text" @click="store.erase(props.sound.id)">⨯</button>
     </div>
   </div>
 </template>

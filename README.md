@@ -35,15 +35,17 @@ Don't try to upload some weird things as PDF files or PNG... Use it at your own 
 
 ## Todos
 
+- [x] Clean...
+- [x] eslint, editorconfig, prettier
+- [x] Pinia / store for list state 
 - [ ] Bulk upload
 - [ ] Bulk download
 - [ ] Test files format
 - [ ] Samples size and duration
-- [ ] Add mono/left/right option
+- [ ] Add mid/left/right/side option
 - [ ] .desktop file for deb
 - [ ] Save last folder
 - [ ] Settings
-- [ ] Clean...
 - [ ] Comments
 
 
@@ -64,3 +66,14 @@ npm install
 ```bash
 npm run dev
 ```
+
+## Developers tools (Visual Studio Code extensions)
+
+1. Prettier - Code formatter [(esbenp.prettier-vscode)](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+   
+2. EditorConfig  for VS Code [(EditorConfig.EditorConfig)](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+3. ESlint [(dbaeumer.vscode-eslint)](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+4. Vue Language Features (Volar) [(Vue.volar)](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+5. TypeScript Vue Plugin (Volar) [(Vue.vscode-typescript-vue-plugin)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+
+No need of a .vscode/settings.json

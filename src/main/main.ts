@@ -140,7 +140,7 @@ ipcMain.handle("list", async () => {
     })
 })
 
-ipcMain.handle("remove", async (e, id: number) => {
+ipcMain.handle("erase", async (e, id: number) => {
   return await execShellCommand(join(app.getPath("home"), `/.cargo/bin/volsa2-cli remove ${id}`))
     .then((result: string) => {
       return "ok"

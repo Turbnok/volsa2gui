@@ -1,90 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import type { Ref } from "vue"
-
 import Item from "./Item.vue"
 import { Sound } from "../typings/electron"
+import { useSamplesStore } from "../stores/samplesStore"
+const store = useSamplesStore()
 interface Props {
   list: Array<Sound>
 }
+defineProps<Props>()
+
 const $items: Ref<HTMLElement | null> = ref(null)
 const $drop: Ref<HTMLElement | null> = ref(null)
 
-const props = defineProps<Props>()
 const drop = ref(false)
 const dropId = ref(0)
 const dropzone = ref(false)
 const offsetY = ref(0)
-const emit = defineEmits<{
-  (e: "error", message: string): void
-}>()
 
-async function download(id: number) {
-  const result = await window.volsa.download(id)
-  if (result === "no volca") {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.changed = true
-      }
-    })
-    emit("error", "Error: could not find volca sample. Is it plugged ?")
-  } else {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.file = result
-      }
-    })
-  }
-}
-
-async function upload(id: number, path: string) {
-  const result = await window.volsa.upload(id, path)
-  if (result === "no volca") {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.changed = true
-      }
-    })
-    emit("error", "Error: could not find volca sample. Is it plugged ?")
-  } else {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.text = element.textNew ?? ""
-        element.changed = false
-        element.file = element.fileNew ?? ""
-        element.fileNew = null
-        element.textNew = null
-      }
-    })
-  }
-}
-async function remove(id: number) {
-  const result = await window.volsa.remove(id)
-  if (result === "no volca") {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.changed = true
-      }
-    })
-    emit("error", "Error: could not find volca sample. Is it plugged ?")
-  } else {
-    props.list.forEach((element: Sound) => {
-      if (element.id === id) {
-        element.text = ""
-        element.length = 0
-        element.speed = 0
-        element.changed = true
-        element.file = ""
-      }
-    })
-    //{id:v.id,text:v.name,length:v.length,speed:v.speed,changed:false,file:null}
-  }
-}
-/*
-document.addEventListener('dragexit',(e:any)=>{
-  console.log("on Drag Exit")
-  drop.value = false;
-})*/
 function onDragLeave(e: DragEvent) {
   e.preventDefault()
   drop.value = false
@@ -102,17 +35,7 @@ document.addEventListener("mouseenter", (e: MouseEvent) => {
 })
 function onDragEnter(e: DragEvent) {
   e.preventDefault()
-
   drop.value = true
-
-  const nbItems = e.dataTransfer?.items?.length ?? 0
-  console.log("ITEMS", nbItems)
-
-  for (let f = 0; f < nbItems; f++) {
-    // Using the path attribute to get absolute file path
-    //const item = event.dataTransfer?.items.item(0);
-    //console.log('File Path of dragged files: ', f)
-  }
 }
 function onMove(e: DragEvent) {
   e.preventDefault()
@@ -140,51 +63,17 @@ function onDrop(e: DragEvent) {
       const file: File | null = files.item(i)
       if (file) {
         if (file.path) {
-          props.list[index].fileNew = file.path
-          props.list[index].textNew = file.name
-          props.list[index].changed = true
+          store.update(index, file.name, file.path)
         }
       }
     }
   }
 }
-
-/*
-// call the function
-// //const list = ref()
- document.addEventListener('dragover', (event) => {
-  event.preventDefault();
-  event.stopPropagation();
-  console.log(event.clientY);
-    console.log(event.dataTransfer?.items)
-
-});
-
- document.addEventListener('dragenter', (event) => {
-     console.log('File is in the Drop Space');
-     drop.value = true;
- });
-  */
-// document.addEventListener('dragleave', (event) => {
-
-//     console.log('File has left the Drop Space');
-// });
-// document.addEventListener('drop', (event) => {
-//     event.preventDefault();
-//     event.stopPropagation();
-//     console.log(event.dataTransfer?.items)
-//     let nbItems =  event.dataTransfer?.items?.length ?? 0;
-//     for (let f=0; f<nbItems ;f++) {
-//         // Using the path attribute to get absolute file path
-//         //const item = event.dataTransfer?.items.item(0);
-//         console.log('File Path of dragged files: ', f)
-//     }
-// });
 </script>
 <template>
   <div ref="$items" class="list">
     <div class="items">
-      <Item @remove="remove" @upload="upload" @download="download" v-for="(i, n) in 200" :sound="list[n]" :key="`sound${n}`" />
+      <Item v-for="(i, n) in 200" :sound="list[n]" :key="`sound${n}`" />
       <div :class="dropzone ? 'dropzone no' : 'dropzone'" @dragenter.self="onDragEnter" @dragleave.self="onDragLeave" @dragover.self="onMove" @drop="onDrop"></div>
     </div>
     <div ref="$drop" v-if="drop" class="drop"></div>
