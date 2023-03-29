@@ -1,43 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from "vue"
-const props = defineProps(["msg", "type"])
-// type-based
-const emit = defineEmits<{
-  (e: "close"): void
-}>()
-async function check() {
-  volsa.value = await window.fs.checkvolsa()
-}
-function onVolsa(e: MouseEvent) {
-  e.preventDefault()
-  window.electronAPI.openURL("https://github.com/00nktk/volsa2")
-}
-const volsa = ref(true)
-const msg = ref("")
-const type = ref("error")
-function close() {
-  emit("close")
-  msg.value = ""
-}
-watch(
-  () => props.msg,
-  (pMsg) => {
-    msg.value = pMsg
-  }
-)
-watch(
-  () => props.type,
-  (pType) => {
-    type.value = pType
-  }
-)
-check()
+import { storeToRefs } from "pinia"
+import { useAppStore, Popin } from "../stores/appStore"
+
+const appStore = useAppStore()
+const { show, message, type } = storeToRefs(appStore)
 </script>
 
 <template>
-  <div @click="close" class="container" v-if="!volsa || msg.length">
-    <div :class="type" v-if="msg.length && type != 'infos'">{{ msg }}</div>
-    <div :class="type" v-if="type == 'infos'">
+  <div @click="appStore.close()" class="container" v-if="show">
+    <div class="infos" v-if="type === Popin.Credits">
       <h2><img class="sample2" src="/volca2.svg" alt="Sample2" />Volsa2 gui</h2>
       <h3>
         a gui for VolSa 2 by
@@ -56,13 +27,19 @@ check()
             <a href="https://github.com/Deluze/electron-vue-template.git" target="_blank">electron-vue-template</a><br />A simple starter template for a Vue3 + Electron TypeScript based application,
             including ViteJS and Electron Builder
           </li>
+          <li>
+            <a href="https://github.com/Deluze/electron-vue-template.git" target="_blank">🍍Pinia</a><br />The intuitive store for Vue.js Type Safe, Extensible, and Modular by design. Forget you are
+            even using a store.
+          </li>
           <li><a href="https://www.nordtheme.com/" target="_blank">nordtheme</a><br />An arctic, north-bluish color palette.</li>
         </ul>
       </div>
     </div>
-    <div :class="type" v-if="!volsa">
+    <div class="infos" v-else-if="type === Popin.Message">{{ message }}</div>
+    <div class="error" v-else-if="type === Popin.Error">{{ message }}</div>
+    <div class="error" v-if="type === Popin.NoVolsa">
       Error : volsa2-cli is not installed or not in `/home/$USER/.cargo/bin/volsa2-cli`, please check
-      <a @click="onVolsa">https://github.com/00nktk/volsa2</a> README.md
+      <a href="https://github.com/00nktk/volsa2" target="_blank">https://github.com/00nktk/volsa2</a> README.md
     </div>
   </div>
 </template>

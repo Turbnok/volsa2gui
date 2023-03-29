@@ -16,7 +16,7 @@ This app is "linux only", it may compiles on windows and macos but as it uses **
 
 The app uses `aplay` command from `alsa` to play sounds. It's not mandatory but necessary if you want to hear your samples from within the app.
 
-Feel free to submit pull requests or suggestions. Be warned, the code is a ~~total mess~~ personnal project.
+Feel free to submit pull requests or suggestions. Be warned, the code is a ~~total mess~~ (not anymore) personnal project.
 
 ## Usage
 
@@ -43,10 +43,11 @@ Don't try to upload some weird things as PDF files or PNG... Use it at your own 
 - [ ] Test files format
 - [ ] Samples size and duration
 - [ ] Add mid/left/right/side option
-- [ ] .desktop file for deb
+- [ ] .desktop file for deb installation
 - [ ] Save last folder
 - [ ] Settings
 - [ ] Comments
+- [ ] Release Deb / AppImage / ~~snap~~
 
 
 ## Developers starting guide

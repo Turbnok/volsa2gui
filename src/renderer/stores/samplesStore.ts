@@ -1,8 +1,11 @@
-import { ref, computed } from "vue"
+import { ref } from "vue"
 import { defineStore } from "pinia"
 import { Sound } from "../typings/electron"
 import { isString } from "@vue/shared"
+import { Popin, useAppStore } from "./appStore"
+
 export const useSamplesStore = defineStore("samplesStore", () => {
+  const appStore = useAppStore()
   const emptySound = (pId: number) => {
     return {
       id: pId,
@@ -31,8 +34,10 @@ export const useSamplesStore = defineStore("samplesStore", () => {
    */
   const getSamples = async () => {
     const list = await window.volsa.list()
+    console.log("list", list)
     if (list === "no volca") {
-      //emit("error", "Error: could not find volca sample. Is it plugged ?")
+      console.log("No Volca ???")
+      appStore.showPopin(Popin.Error, "Error: could not find volca sample. Is it plugged ?")
     } else {
       if (!isString(list)) {
         space.value = list.space

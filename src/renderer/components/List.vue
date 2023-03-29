@@ -2,13 +2,15 @@
 import { ref } from "vue"
 import type { Ref } from "vue"
 import Item from "./Item.vue"
-import { Sound } from "../typings/electron"
 import { useSamplesStore } from "../stores/samplesStore"
-const store = useSamplesStore()
-interface Props {
-  list: Array<Sound>
+
+interface FileWithPath extends File {
+  path: string
 }
-defineProps<Props>()
+/**
+ * @see https://stackoverflow.com/questions/55728316/file-object-does-not-have-a-path-property-typescript
+ */
+const sampleStore = useSamplesStore()
 
 const $items: Ref<HTMLElement | null> = ref(null)
 const $drop: Ref<HTMLElement | null> = ref(null)
@@ -62,8 +64,8 @@ function onDrop(e: DragEvent) {
       if (index > 199) continue
       const file: File | null = files.item(i)
       if (file) {
-        if (file.path) {
-          store.update(index, file.name, file.path)
+        if ((file as FileWithPath).path) {
+          sampleStore.update(index, file.name, (file as FileWithPath).path)
         }
       }
     }
@@ -73,7 +75,7 @@ function onDrop(e: DragEvent) {
 <template>
   <div ref="$items" class="list">
     <div class="items">
-      <Item v-for="(i, n) in 200" :sound="list[n]" :key="`sound${n}`" />
+      <Item v-for="(i, n) in 200" :sound="sampleStore.samples[n]" :key="`sound${n}`" />
       <div :class="dropzone ? 'dropzone no' : 'dropzone'" @dragenter.self="onDragEnter" @dragleave.self="onDragLeave" @dragover.self="onMove" @drop="onDrop"></div>
     </div>
     <div ref="$drop" v-if="drop" class="drop"></div>

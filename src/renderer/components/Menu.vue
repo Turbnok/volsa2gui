@@ -1,26 +1,19 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
-import { ref } from "vue"
+import { Popin } from "../stores/appStore"
 import { useSamplesStore } from "../stores/samplesStore"
-const directory = ref("/")
+import { useAppStore } from "../stores/appStore"
+
 const store = useSamplesStore()
 const { space } = storeToRefs(store)
+const appStore = useAppStore()
+const { directory } = storeToRefs(appStore)
 
-const props = defineProps(["directory"])
-const emit = defineEmits<{
-  (e: "error", message: string): void
-  (e: "directory", path: string): void
-  (e: "help"): void
-}>()
 async function chooseFolder() {
   const d = await window.fs.dialog()
   if (d) {
     directory.value = d
   }
-}
-
-async function help() {
-  emit("help")
 }
 </script>
 <template>
@@ -28,7 +21,7 @@ async function help() {
     <img class="sample2" src="/volca2.svg" alt="Sample2" />
     <h2 class="title">Volsa2 gui</h2>
     <div class="help">
-      <button @click="help">?</button>
+      <button @click="appStore.showPopin(Popin.Credits, null)">?</button>
     </div>
     <div class="occupied">
       <label for="space">space:</label>

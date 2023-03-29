@@ -89,6 +89,11 @@ button {
   padding: 0.5rem;
   list-style: none;
   background-color: var(--nord1);
+  border-left: 3px solid var(--nord1);
+  &:hover {
+    border-left: 3px solid var(--nord8);
+    //margin-left: 5px;
+  }
   &:nth-child(2n) {
     background-color: var(--nord2);
   }
