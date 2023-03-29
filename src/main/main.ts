@@ -119,10 +119,11 @@ ipcMain.handle("list", async () => {
           let r: Array<string> | null = item.match(/^(.+?): (.+?) - length: (.+?), speed: (.+?), level: (.+)/)
 
           if (r) {
+            const s = Math.floor((Number(r[3].trim()) / 31250) * 100) / 100
             return {
               id: r[1].trim(),
               name: r[2].trim(),
-              length: r[3].trim(),
+              length: s,
               speed: r[4].trim(),
               level: r[5].trim(),
             }

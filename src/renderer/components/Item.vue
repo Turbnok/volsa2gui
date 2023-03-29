@@ -20,6 +20,9 @@ function play() {
       : {{ props.sound.changed ? "✨" : "" }}{{ props.sound.textNew ? props.sound.textNew : props.sound.text
       }}<span :class="props.sound.changed ? 'file new' : 'file'" v-if="props.sound.file || props.sound.fileNew"> ({{ props.sound.fileNew ?? props.sound.file }})</span>
     </div>
+    <div class="infos" v-if="props.sound.length">
+      <span>{{ props.sound.length }}s</span>
+    </div>
     <div v-if="props.sound.processing" class="loader">
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <rect width="20" height="20" />
@@ -43,6 +46,9 @@ function play() {
   to {
     stroke-dashoffset: 0%;
   }
+}
+.infos {
+  font-size: 0.6rem;
 }
 .loader {
   display: flex;

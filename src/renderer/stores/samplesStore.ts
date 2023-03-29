@@ -14,6 +14,7 @@ export const useSamplesStore = defineStore("samplesStore", () => {
       length: 0,
       level: 0,
       speed: 0,
+      size: 0,
       file: null,
       textNew: null,
       fileNew: null,
@@ -36,7 +37,6 @@ export const useSamplesStore = defineStore("samplesStore", () => {
     const list = await window.volsa.list()
     console.log("list", list)
     if (list === "no volca") {
-      console.log("No Volca ???")
       appStore.showPopin(Popin.Error, "Error: could not find volca sample. Is it plugged ?")
     } else {
       if (!isString(list)) {
@@ -48,6 +48,7 @@ export const useSamplesStore = defineStore("samplesStore", () => {
             text: v.name,
             length: v.length,
             speed: v.speed,
+            size: 0,
             textNew: null,
             fileNew: null,
             changed: false,
@@ -79,7 +80,7 @@ export const useSamplesStore = defineStore("samplesStore", () => {
     sound.processing = true
     const result = await window.volsa.upload(id, path)
     if (result === "no volca") {
-      //  emit("error", "Error: could not find volca sample. Is it plugged ?")
+      appStore.showPopin(Popin.Error, "Error: could not find volca sample. Is it plugged ?")
     } else {
       sound.text = sound.textNew ?? ""
       sound.changed = false
@@ -123,7 +124,7 @@ export const useSamplesStore = defineStore("samplesStore", () => {
     const result = await window.volsa.erase(id)
 
     if (result === "no volca") {
-      // error somehow
+      appStore.showPopin(Popin.Error, "Error: could not find volca sample. Is it plugged ?")
     } else {
       sound.processing = false
       samples.value[id - 1] = emptySound(id)

@@ -13,6 +13,7 @@ export interface Sound {
   length: number
   level: number
   speed: number
+  size: number
   file: string | null
   changed: boolean
   sync: boolean

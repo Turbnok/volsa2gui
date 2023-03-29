@@ -41,7 +41,7 @@ Don't try to upload some weird things as PDF files or PNG... Use it at your own 
 - [ ] Bulk upload
 - [ ] Bulk download
 - [ ] Test files format
-- [ ] Samples size and duration
+- [x] Samples ~~size~~ and duration
 - [ ] Add mid/left/right/side option
 - [ ] .desktop file for deb installation
 - [ ] Save last folder
