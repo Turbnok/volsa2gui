@@ -19,10 +19,9 @@ function play() {
       <span class="number">{{ props.sound.id.toString().padStart(3, "0") }}</span>
       : {{ props.sound.changed ? "✨" : "" }}{{ props.sound.textNew ? props.sound.textNew : props.sound.text
       }}<span :class="props.sound.changed ? 'file new' : 'file'" v-if="props.sound.file || props.sound.fileNew"> ({{ props.sound.fileNew ?? props.sound.file }})</span>
+      <span class="infos" v-if="props.sound.length">&nbsp;{{ props.sound.length }}s</span>
     </div>
-    <div class="infos" v-if="props.sound.length">
-      <span>{{ props.sound.length }}s</span>
-    </div>
+
     <div v-if="props.sound.processing" class="loader">
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <rect width="20" height="20" />
