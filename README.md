@@ -34,20 +34,25 @@ Feel free to submit pull requests or suggestions. Be warned, the code is a ~~tot
 Don't try to upload some weird things as PDF files or PNG... Use it at your own risk !
 
 ## Todos
-
+### v0.0.1
 - [x] Clean...
 - [x] eslint, editorconfig, prettier
 - [x] Pinia / store for list state 
+- [x] Samples ~~size~~ and duration
+
+### v1.0.0
+- [ ] Settings  
+- [ ] Save last folder
+- [ ] .desktop file for deb installation
+- [ ] Release Deb / AppImage / ~~snap~~
+- [ ] Test files format
+- [ ] Add mid/left/right/side option
+
+### v2.0.0
 - [ ] Bulk upload
 - [ ] Bulk download
-- [ ] Test files format
-- [x] Samples ~~size~~ and duration
-- [ ] Add mid/left/right/side option
-- [ ] .desktop file for deb installation
-- [ ] Save last folder
-- [ ] Settings
 - [ ] Comments
-- [ ] Release Deb / AppImage / ~~snap~~
+
 
 
 ## Developers starting guide
