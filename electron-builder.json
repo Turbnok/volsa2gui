@@ -1,5 +1,5 @@
 {
-    "appId": "com.electron.app",
+    "appId": "com.electron.volsa2gui",
     "directories": {
         "output": "dist"
     },
@@ -7,14 +7,22 @@
         "oneClick": false,
         "perMachine": false,
         "allowToChangeInstallationDirectory": true,
-        "shortcutName": "Electron App"
+        "shortcutName": "Volsa2gui"
     },
     "win": {
         "target": "nsis"
     },
     "linux":  {
-        "target": ["appimage","deb"],
-        "icon" : "../src/icns/volsa2gui.icns"
+        "target": ["appimage"],
+        "icon" : "../src/icns/volsa2gui.icns",
+        "desktop":{
+          "Name":"Volsa2gui",
+          "Comment":"An amazing application",
+          "Keywords":"Korg,Volca,Volsa2,Volca sample 2",
+          "StartupNotify":true,
+          "Terminal":false
+        },
+        "category":"Audio"
     },
     "files": [
         "build/main/**/*",
