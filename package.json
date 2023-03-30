@@ -1,6 +1,6 @@
 {
   "name": "volsa2-gui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A GUI for volsa-cli",
   "main": "build/main/main.js",
   "scripts": {
