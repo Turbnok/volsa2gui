@@ -1,12 +1,12 @@
 import { app, BrowserWindow, dialog, shell, ipcMain, session } from "electron"
+import * as child from "child_process"
 import os from "os"
 import { join } from "path"
 let workingDir = os.homedir()
 
 function execShellCommand(cmd): Promise<string> {
-  const exec = require("child_process").exec
   return new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout, stderr) => {
+    child.exec(cmd, (error, stdout, stderr) => {
       if (error) {
         reject(error)
         console.warn(error)
@@ -71,7 +71,7 @@ app.on("window-all-closed", function () {
   if (process.platform !== "darwin") app.quit()
 })
 ipcMain.on("openURL", (event, url) => {
-  require("electron").shell.openExternal(url)
+  shell.openExternal(url)
 })
 
 ipcMain.handle("dialog", async () => {
@@ -89,19 +89,15 @@ ipcMain.handle("ls", async () => {
     .then((list: string) => {
       return list.split("\n")
     })
-    .catch((error) => {
-      return
-    })
+    .catch(() => null)
 })
 ipcMain.handle("debuge", async () => {
   console.log(app.getPath("home"))
 })
 ipcMain.handle("checkvolsa", async () => {
   return await execShellCommand(`command -v ${join(app.getPath("home"), "/.cargo/bin/volsa2-cli")}`)
-    .then((list: string) => {
-      return true
-    })
-    .catch((error) => false)
+    .then(() => true)
+    .catch(() => false)
 })
 ipcMain.handle("list", async () => {
   return await execShellCommand(`${join(app.getPath("home"), "/.cargo/bin/volsa2-cli")} list -a`)
@@ -135,21 +131,16 @@ ipcMain.handle("list", async () => {
         }),
       }
     })
-    .catch((error) => {
-      console.log("Error")
+    .catch(() => {
+
       return "no volca"
     })
 })
 
 ipcMain.handle("erase", async (e, id: number) => {
   return await execShellCommand(join(app.getPath("home"), `/.cargo/bin/volsa2-cli remove ${id}`))
-    .then((result: string) => {
-      return "ok"
-    })
-    .catch((error) => {
-      console.log("Error")
-      return "no volca"
-    })
+    .then(() => "ok")
+    .catch(() => "no volca")
 })
 
 ipcMain.handle("play", async (e, file: string) => {
@@ -164,35 +155,16 @@ ipcMain.handle("download", async (e, id: number) => {
       const lines = result.split("\n")
       return lines[2].split('"')[1]
     })
-    .catch((error) => {
-      console.log("Error")
-      return "no volca"
-    })
+    .catch(() => "no volca")
 })
 ipcMain.handle("upload", async (e, id: number, path: string) => {
-  console.log("upload, ", id, path)
   return await execShellCommand(join(app.getPath("home"), `/.cargo/bin/volsa2-cli upload "${path}" ${id}`))
     .then((result: string) => {
       const lines = result.split("\n")
       return lines[2].split('"')[1]
     })
-    .catch((error) => {
-      console.log("Error")
+    .catch(() => {
       return "no volca"
     })
 })
 
-// ipcMain.handle("sendAll", async (e, Array<Sound) => {
-//   console.log("upload, ", id, path);
-//   return await execShellCommand(
-//     join(app.getPath("home"), `/.cargo/bin/volsa2-cli upload "${path}" ${id}`)
-//   )
-//     .then((result: string) => {
-//       const lines = result.split("\n");
-//       return lines[2].split('"')[1];
-//     })
-//     .catch((error) => {
-//       console.log("Error");
-//       return "no volca";
-//     });
-// });
