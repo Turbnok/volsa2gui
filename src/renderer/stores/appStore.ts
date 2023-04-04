@@ -1,5 +1,6 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
+import { Config } from "../typings/electron"
 export enum Popin {
   Error,
   Message,
@@ -7,6 +8,9 @@ export enum Popin {
   NoVolsa,
 }
 export const useAppStore = defineStore("appStore", () => {
+  const settings = ref(false)
+  const config = ref<Config>()
+
   const show = ref(false)
   const message = ref<string | null>()
   const type = ref<Popin>(Popin.Error)
@@ -20,5 +24,17 @@ export const useAppStore = defineStore("appStore", () => {
     type.value = pType
     message.value = msg
   }
-  return { show, message, directory, type, close, showPopin }
+  const showSettings = () => {
+    settings.value = true
+  }
+
+  const hideSettings = () => {
+    settings.value = false
+  }
+  const getSettings = async () => {
+    config.value = await window.fs.getConfig("config")
+  }
+  getSettings()
+
+  return { config, settings, show, message, directory, type, close, showPopin, showSettings, hideSettings }
 })

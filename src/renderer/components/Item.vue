@@ -29,7 +29,7 @@ function play() {
     </div>
     <div class="actions">
       <button :disabled="!props.sound.file && !props.sound.fileNew" @click="play">♪</button>
-      <button :disabled="!props.sound.text || !props.sound.sync || props.sound.file || props.sound.fileNew" @click="store.download(props.sound.id)">↧</button>
+      <button :disabled="props.sound.text === '' || !props.sound.sync || props.sound.file === null || props.sound.fileNew === null" @click="store.download(props.sound.id)">↧</button>
       <button :disabled="!props.sound.fileNew" @click="store.upload(props.sound.id, props.sound.fileNew)">↥</button>
       <button :disabled="!props.sound.changed" @click="store.revert(props.sound.id)">⟲</button>
       <button :disabled="!props.sound.sync || !props.sound.text" @click="store.erase(props.sound.id)">⨯</button>

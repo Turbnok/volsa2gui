@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("fs", {
   debuge: async () => await ipcRenderer.invoke("debuge"),
   play: async (file: string) => await ipcRenderer.invoke("play", file),
   dialog: () => ipcRenderer.invoke("dialog"),
+  getConfig: async (configName: string) => await ipcRenderer.invoke("getConfig", configName),
 })
 contextBridge.exposeInMainWorld("volsa", {
   list: async () => await ipcRenderer.invoke("list"),

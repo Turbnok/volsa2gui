@@ -6,6 +6,11 @@ export default interface ElectronApi {
   openURL: (url: string) => void
   dialog: () => void
 }
+export interface Config {
+  directory: string
+  volsa2cli: string
+  soundSettings: number
+}
 export interface Sound {
   id: number
   processing: boolean
@@ -25,6 +30,7 @@ export interface Sound {
 export interface Fs {
   play: (file: string) => string
   dialog: () => string
+  getConfig: (file: string) => Promise<Config>
 }
 export interface Volsa {
   list: () => Promise<

@@ -104,16 +104,13 @@ function onDrop(e: DragEvent) {
   top: 0px;
   left: 1rem;
   width: calc(100% - 1rem);
-
   border: 2px solid var(--nord8);
 }
 .list {
   position: relative;
   padding: 0rem 0rem 1rem 1rem;
   display: flex;
-
   flex-direction: column;
-
   overflow-y: auto;
 }
 

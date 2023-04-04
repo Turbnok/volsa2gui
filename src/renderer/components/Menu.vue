@@ -41,6 +41,7 @@ async function chooseFolder() {
     <div class="right">
       <!--<button type="button" @click="sendAll">📨 send</button>-->
       <button type="button" @click="store.getSamples()">📃 list</button>
+      <button type="button" @click="appStore.showSettings()">⚙</button>
     </div>
   </div>
 </template>
