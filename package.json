@@ -37,6 +37,7 @@
   "dependencies": {
     "sass": "^1.59.3",
     "sass-loader": "^13.2.1",
-    "vue": "^3.2.40"
+    "vue": "^3.2.40",
+    "waveform-data": "^4.3.0"
   }
 }
