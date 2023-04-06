@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, isProxy, toRaw } from "vue"
 import { defineStore } from "pinia"
 import { Config } from "../typings/electron"
 export enum Popin {
@@ -8,13 +8,12 @@ export enum Popin {
   NoVolsa,
 }
 export const useAppStore = defineStore("appStore", () => {
-  const settings = ref(false)
-  const config = ref<Config>()
+  const config = ref<Config>({ directory: "", soundSettings: 0, volsa2cli: "" })
 
   const show = ref(false)
   const message = ref<string | null>()
   const type = ref<Popin>(Popin.Error)
-  const directory = ref("/")
+
   const close = () => {
     show.value = false
     message.value = ""
@@ -24,17 +23,17 @@ export const useAppStore = defineStore("appStore", () => {
     type.value = pType
     message.value = msg
   }
-  const showSettings = () => {
-    settings.value = true
-  }
 
-  const hideSettings = () => {
-    settings.value = false
-  }
   const getSettings = async () => {
     config.value = await window.fs.getConfig("config")
   }
+  const setSettingsValue = async (setting: keyof Config, value: string) => {
+    const raw = JSON.parse(JSON.stringify(config.value))
+    raw[setting] = value
+    config.value = raw
+    await window.fs.setConfig("config", JSON.stringify(raw))
+  }
   getSettings()
 
-  return { config, settings, show, message, directory, type, close, showPopin, showSettings, hideSettings }
+  return { config, show, message, type, close, showPopin, setSettingsValue }
 })

@@ -3,16 +3,23 @@ import { storeToRefs } from "pinia"
 import { Popin } from "../stores/appStore"
 import { useSamplesStore } from "../stores/samplesStore"
 import { useAppStore } from "../stores/appStore"
+import SoundMode from "./SoundMode.vue"
 
 const store = useSamplesStore()
 const { space } = storeToRefs(store)
 const appStore = useAppStore()
-const { directory } = storeToRefs(appStore)
+const { config } = storeToRefs(appStore)
 
 async function chooseFolder() {
-  const d = await window.fs.dialog()
+  const d = await window.fs.dialog(false)
   if (d) {
-    directory.value = d
+    appStore.setSettingsValue("directory", d)
+  }
+}
+async function chooseBin() {
+  const d = await window.fs.dialog(true)
+  if (d) {
+    appStore.setSettingsValue("volsa2cli", d)
   }
 }
 </script>
@@ -31,17 +38,32 @@ async function chooseFolder() {
 
   <div class="menu">
     <div class="left">
-      <button type="button" @click="chooseFolder">📂</button>
-      <div class="folder">
-        <span>Working folder</span>
-        <span>{{ directory }}</span>
+      <div class="entry">
+        <button type="button" @click="chooseBin">🤖</button>
+        <div class="folder">
+          <span>volsa2-cli</span>
+          <span>{{ config?.volsa2cli }}</span>
+        </div>
       </div>
+      <div class="entry">
+        <button type="button" @click="chooseFolder">📂</button>
+        <div class="folder">
+          <span>Working folder</span>
+          <span>{{ config?.directory }}</span>
+        </div>
+      </div>
+
       <!-- <button type="button" @click="listDirs">send</button> -->
     </div>
     <div class="right">
+      <div class="entry">
+        <button type="button" @click="store.getSamples()">📃 list</button>
+      </div>
+      <div class="entry">
+        <SoundMode />
+      </div>
       <!--<button type="button" @click="sendAll">📨 send</button>-->
-      <button type="button" @click="store.getSamples()">📃 list</button>
-      <button type="button" @click="appStore.showSettings()">⚙</button>
+      <!--<button type="button" @click="appStore.showSettings()">⚙</button>-->
     </div>
   </div>
 </template>
@@ -110,24 +132,43 @@ h2 {
 }
 .menu {
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 .left {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  span {
-    color: var(--nord9);
-    font-size: 0.8rem;
+  flex-direction: column;
+  .entry {
+    display: flex;
+    align-items: flex-end;
+
+    span {
+      color: var(--nord9);
+      font-size: 0.8rem;
+    }
   }
 }
 .right {
   display: flex;
   flex: 1;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-end;
+  height: 100%;
+  .entry {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    span {
+      color: var(--nord9);
+      font-size: 0.8rem;
+    }
+    &:last-child {
+      align-self: flex-end;
+      flex: 1;
+    }
+  }
 }
 button {
   margin-right: 0.5rem;

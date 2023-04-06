@@ -2,14 +2,14 @@
 import Menu from "./components/Menu.vue"
 import List from "./components/List.vue"
 import Erro from "./components/Error.vue"
-import Settings from "./components/Settings.vue"
+
 import { version } from "../../package.json"
 </script>
 <template>
   <Menu />
   <List />
   <Erro />
-  <Settings />
+
   <div class="version">v{{ version }}</div>
 </template>
 <style>

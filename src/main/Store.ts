@@ -9,10 +9,10 @@ export async function getStore(storeName: string) {
   return await parseDataFile(path, { directory: app.getPath("home"), volsa2cli: join(app.getPath("home"), ".cargo", "bin", "volsa2cli") })
 }
 
-export async function setStore(storeName: string, json: { directory: string; volsa2cli: string }) {
+export async function setStore(storeName: string, json: string) {
   const userDataPath = app.getPath("userData")
   const path = join(userDataPath, storeName + ".json")
-  return await writeFile(path, JSON.stringify(json))
+  return await writeFile(path, json)
 }
 
 export async function updateStoreValue(storeName: string, key: string, value: string) {

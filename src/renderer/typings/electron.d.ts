@@ -29,8 +29,9 @@ export interface Sound {
 /** FS as FileSystem */
 export interface Fs {
   play: (file: string) => string
-  dialog: () => string
-  getConfig: (file: string) => Promise<Config>
+  dialog: (file: boolean) => string
+  getConfig: (fileName: string) => Promise<Config>
+  setConfig: (fileName: string, config: string) => Promise<string>
 }
 export interface Volsa {
   list: () => Promise<

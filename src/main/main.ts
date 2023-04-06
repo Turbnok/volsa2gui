@@ -78,16 +78,16 @@ ipcMain.on("openURL", (event, url) => {
   shell.openExternal(url)
 })
 
-ipcMain.handle("dialog", async () => {
+ipcMain.handle("dialog", async (e, file: boolean) => {
   /**
    * there is a bug about dialog box appearing beahind mainwindow
    * https://github.com/electron/electron/issues/10723
    * it seems related to "gnome notify"
    */
   const savePath = await dialog.showOpenDialog(mainWindow, {
-    title: "Select a working directory",
+    title: file ? "Select volsa2-cli binary" : "Select a working directory",
     buttonLabel: "Select",
-    properties: ["openDirectory"],
+    properties: file ? [] : ["openDirectory"],
   })
   if (savePath.canceled) return
   workingDir = savePath.filePaths[0]
@@ -176,4 +176,8 @@ ipcMain.handle("upload", async (e, id: number, path: string) => {
 
 ipcMain.handle("getConfig", async (e, configName: string) => {
   return await getStore(configName)
+})
+
+ipcMain.handle("setConfig", async (e, configName: string, config: string) => {
+  return await setStore(configName, config)
 })
