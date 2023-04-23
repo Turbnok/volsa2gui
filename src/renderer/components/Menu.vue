@@ -11,13 +11,14 @@ const appStore = useAppStore()
 const { config } = storeToRefs(appStore)
 
 async function chooseFolder() {
-  const d = await window.fs.dialog(false)
+  const d = window.fs.dialog(false)
   if (d) {
     appStore.setSettingsValue("directory", d)
   }
 }
 async function chooseBin() {
   const d = await window.fs.dialog(true)
+
   if (d) {
     appStore.setSettingsValue("volsa2cli", d)
   }
@@ -32,7 +33,7 @@ async function chooseBin() {
     </div>
     <div class="occupied">
       <label for="space">space:</label>
-      <meter class="progress" id="space" low="70" high="85" :value="space" min="0" max="100" />
+      <meter class="progress" id="space" low="70" high="85" :value="space" min="0" max="100" />F
     </div>
   </div>
 

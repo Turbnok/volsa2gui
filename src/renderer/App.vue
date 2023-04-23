@@ -9,7 +9,6 @@ import { version } from "../../package.json"
   <Menu />
   <List />
   <Erro />
-
   <div class="version">v{{ version }}</div>
 </template>
 <style>

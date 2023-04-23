@@ -31,7 +31,7 @@ export interface Fs {
   play: (file: string) => string
   dialog: (file: boolean) => string
   getConfig: (fileName: string) => Promise<Config>
-  setConfig: (fileName: string, config: string) => Promise<string>
+  setConfig: (fileName: string, config: Config) => Promise<string>
 }
 export interface Volsa {
   list: () => Promise<

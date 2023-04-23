@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron"
+import { Config } from "../renderer/typings/electron"
 contextBridge.exposeInMainWorld("electronAPI", {
   openURL: (url: string) => ipcRenderer.send("openURL", url),
   sendMessage: (message: string) => ipcRenderer.send("message", message),
@@ -9,8 +10,12 @@ contextBridge.exposeInMainWorld("fs", {
   debuge: async () => await ipcRenderer.invoke("debuge"),
   play: async (file: string) => await ipcRenderer.invoke("play", file),
   dialog: (file = false) => ipcRenderer.invoke("dialog", file),
-  getConfig: async (configName: string) => await ipcRenderer.invoke("getConfig", configName),
-  setConfig: async (configName: string, config: string) => await ipcRenderer.invoke("setConfig", configName, config),
+  getConfig: async (configName: string): Promise<Config> => await ipcRenderer.invoke("getConfig", configName),
+  setConfig: async (configName: string, config: Config) => {
+    console.log("SET CNFIG ???", configName)
+
+    await ipcRenderer.invoke("setConfig", configName, config)
+  },
 })
 contextBridge.exposeInMainWorld("volsa", {
   list: async () => await ipcRenderer.invoke("list"),

@@ -3,6 +3,7 @@ import { join } from "path"
 import * as child from "child_process"
 import os from "os"
 import { getStore, setStore } from "./Store"
+import { Config } from "../renderer/typings/electron"
 let workingDir = os.homedir()
 let mainWindow
 
@@ -77,7 +78,7 @@ app.on("window-all-closed", function () {
 ipcMain.on("openURL", (event, url) => {
   shell.openExternal(url)
 })
-
+console.log("HOPHOPHPO")
 ipcMain.handle("dialog", async (e, file: boolean) => {
   /**
    * there is a bug about dialog box appearing beahind mainwindow
@@ -174,10 +175,12 @@ ipcMain.handle("upload", async (e, id: number, path: string) => {
     })
 })
 
-ipcMain.handle("getConfig", async (e, configName: string) => {
-  return await getStore(configName)
+ipcMain.handle("getConfig", async (e, configName: string): Promise<Config> => {
+  const store = await getStore(configName)
+  return store
 })
 
-ipcMain.handle("setConfig", async (e, configName: string, config: string) => {
+ipcMain.handle("setConfig", async (e, configName: string, config: Config) => {
+  console.log("SET CONFIG ?", config)
   return await setStore(configName, config)
 })

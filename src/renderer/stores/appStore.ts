@@ -23,7 +23,6 @@ export const useAppStore = defineStore("appStore", () => {
     type.value = pType
     message.value = msg
   }
-
   const getSettings = async () => {
     config.value = await window.fs.getConfig("config")
   }
@@ -31,7 +30,7 @@ export const useAppStore = defineStore("appStore", () => {
     const raw = JSON.parse(JSON.stringify(config.value))
     raw[setting] = value
     config.value = raw
-    await window.fs.setConfig("config", JSON.stringify(raw))
+    window.fs.setConfig("config", config.value)
   }
   getSettings()
 
