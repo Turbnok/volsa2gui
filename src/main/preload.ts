@@ -12,8 +12,6 @@ contextBridge.exposeInMainWorld("fs", {
   dialog: (file = false) => ipcRenderer.invoke("dialog", file),
   getConfig: async (configName: string): Promise<Config> => await ipcRenderer.invoke("getConfig", configName),
   setConfig: async (configName: string, config: Config) => {
-    console.log("SET CNFIG ???", configName)
-
     await ipcRenderer.invoke("setConfig", configName, config)
   },
 })

@@ -35,7 +35,6 @@ export const useSamplesStore = defineStore("samplesStore", () => {
    */
   const getSamples = async () => {
     const list = await window.volsa.list()
-    console.log("list", list)
     if (list === "no volca") {
       appStore.showPopin(Popin.Error, "Error: could not find volca sample. Is it plugged ?")
     } else {

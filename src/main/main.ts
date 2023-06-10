@@ -107,7 +107,7 @@ ipcMain.handle("debuge", async () => {
   console.log(app.getPath("home"))
 })
 ipcMain.handle("checkvolsa", async () => {
-  return await execShellCommand(`command -v ${join(app.getPath("home"), "/.cargo/bin/volsa2-cli")}`)
+  return await execShellCommand(`command -v ${config.volsa2cli}`)
     .then(() => true)
     .catch(() => false)
 })
@@ -146,7 +146,8 @@ ipcMain.handle("list", async () => {
 })
 
 ipcMain.handle("erase", async (e, id: number) => {
-  return await execShellCommand(join(app.getPath("home"), `/.cargo/bin/volsa2-cli remove ${id}`))
+  const cmd = `${config.volsa2cli} remove ${id}`
+  return await execShellCommand(cmd)
     .then(() => "ok")
     .catch(() => "no volca")
 })
@@ -155,8 +156,7 @@ ipcMain.handle("play", async (e, file: string) => {
   return await execShellCommand(`aplay "${file}"`).then(() => "ok")
 })
 ipcMain.handle("download", async (e, id: number) => {
-  const cli = config.volsa2cli //.join(app.getPath("home"), `/.cargo/bin/volsa2-cli`)
-  const cmd = `cd ${workingDir} && ${cli} download ${id}`
+  const cmd = `cd ${workingDir} && ${config.volsa2cli} download ${id}`
   return await execShellCommand(cmd)
     .then((result: string) => {
       const lines = result.split("\n")
@@ -165,7 +165,7 @@ ipcMain.handle("download", async (e, id: number) => {
     .catch(() => "no volca")
 })
 ipcMain.handle("upload", async (e, id: number, path: string) => {
-  return await execShellCommand(join(app.getPath("home"), `/.cargo/bin/volsa2-cli upload "${path}" ${id}`))
+  return await execShellCommand(`${config.volsa2cli} upload "${path}" ${id}`)
     .then((result: string) => {
       const lines = result.split("\n")
       return lines[2].split('"')[1]
