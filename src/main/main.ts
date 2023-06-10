@@ -5,7 +5,8 @@ import os from "os"
 import { getStore, setStore } from "./Store"
 import { Config } from "../renderer/typings/electron"
 let workingDir = os.homedir()
-let mainWindow
+let mainWindow: BrowserWindow
+let config: Config
 
 function execShellCommand(cmd): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -19,7 +20,7 @@ function execShellCommand(cmd): Promise<string> {
   })
 }
 async function createWindow() {
-  const store = await getStore("config")
+  config = await getStore("config")
   //const toreS = await setStore("config", { directory: "/hop", volsa2cli: "/sdf/" })
   mainWindow = new BrowserWindow({
     width: 800,
@@ -27,7 +28,7 @@ async function createWindow() {
     minWidth: 600,
     minHeight: 400,
     icon: join(__dirname, "static/icon.png"),
-    autoHideMenuBar: true,
+    autoHideMenuBar: process.env.NODE_ENV !== "development",
     darkTheme: true,
     backgroundColor: "#2e3440",
     webPreferences: {
@@ -78,7 +79,7 @@ app.on("window-all-closed", function () {
 ipcMain.on("openURL", (event, url) => {
   shell.openExternal(url)
 })
-console.log("HOPHOPHPO")
+
 ipcMain.handle("dialog", async (e, file: boolean) => {
   /**
    * there is a bug about dialog box appearing beahind mainwindow
@@ -111,14 +112,13 @@ ipcMain.handle("checkvolsa", async () => {
     .catch(() => false)
 })
 ipcMain.handle("list", async () => {
-  return await execShellCommand(`${join(app.getPath("home"), "/.cargo/bin/volsa2-cli")} list -a`)
+  return await execShellCommand(`${config.volsa2cli} list -a`)
     .then((list: string) => {
       const samples: Array<string> = list.split("\n")
       samples.shift()
       const spa = samples.shift()?.match(/(?<=Occupied space: )(.*)(?=%)/)
       const space = spa ? spa[1] : 0
       samples.pop()
-
       return {
         space,
         samples: samples.map((item) => {
@@ -155,7 +155,7 @@ ipcMain.handle("play", async (e, file: string) => {
   return await execShellCommand(`aplay "${file}"`).then(() => "ok")
 })
 ipcMain.handle("download", async (e, id: number) => {
-  const cli = join(app.getPath("home"), `/.cargo/bin/volsa2-cli`)
+  const cli = config.volsa2cli //.join(app.getPath("home"), `/.cargo/bin/volsa2-cli`)
   const cmd = `cd ${workingDir} && ${cli} download ${id}`
   return await execShellCommand(cmd)
     .then((result: string) => {
@@ -176,11 +176,9 @@ ipcMain.handle("upload", async (e, id: number, path: string) => {
 })
 
 ipcMain.handle("getConfig", async (e, configName: string): Promise<Config> => {
-  const store = await getStore(configName)
-  return store
+  return await getStore(configName)
 })
 
 ipcMain.handle("setConfig", async (e, configName: string, config: Config) => {
-  console.log("SET CONFIG ?", config)
   return await setStore(configName, config)
 })

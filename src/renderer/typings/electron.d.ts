@@ -9,7 +9,7 @@ export default interface ElectronApi {
 export interface Config {
   directory: string
   volsa2cli: string
-  soundSettings: number
+  soundSettings: string
 }
 export interface Sound {
   id: number

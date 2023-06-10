@@ -11,7 +11,7 @@ const appStore = useAppStore()
 const { config } = storeToRefs(appStore)
 
 async function chooseFolder() {
-  const d = window.fs.dialog(false)
+  const d = await window.fs.dialog(false)
   if (d) {
     appStore.setSettingsValue("directory", d)
   }

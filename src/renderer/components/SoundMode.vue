@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { useAppStore } from "../stores/appStore"
+import { Config } from "../typings/electron"
 
 const appStore = useAppStore()
 const { config } = storeToRefs(appStore)
+console.log("VALU : ", config.value.soundSettings)
 const pick = ref(config.value.soundSettings)
+watch(config, (newValue: Config) => {
+  pick.value = newValue.soundSettings
+})
+watch(pick, (newValue: string) => {
+  console.log("PICK ??", newValue)
+  appStore.setSettingsValue("soundSettings", newValue)
+})
 </script>
 <template>
   <div class="mode">

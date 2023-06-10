@@ -41,12 +41,12 @@ Don't try to upload some weird things as PDF files or PNG... Use it at your own 
 - [x] Samples ~~size~~ and duration
 
 ### v1.0.0
-- [ ] Settings  
-- [ ] Save last folder
+- [x] Settings  
+- [x] Save last folder
 - [ ] .desktop file for deb installation
 - [ ] Release Deb / AppImage / ~~snap~~
 - [ ] Test files format
-- [ ] Add mid/left/right/side option
+- [x] Add mid/left/right/side option
 
 ### v2.0.0
 - [ ] Bulk upload

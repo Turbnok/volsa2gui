@@ -8,7 +8,7 @@ export enum Popin {
   NoVolsa,
 }
 export const useAppStore = defineStore("appStore", () => {
-  const config = ref<Config>({ directory: "", soundSettings: 0, volsa2cli: "" })
+  const config = ref<Config>({ directory: "", soundSettings: "mid", volsa2cli: "" })
 
   const show = ref(false)
   const message = ref<string | null>()
@@ -29,10 +29,9 @@ export const useAppStore = defineStore("appStore", () => {
   const setSettingsValue = async (setting: keyof Config, value: string) => {
     const raw = JSON.parse(JSON.stringify(config.value))
     raw[setting] = value
-    config.value = raw
-    window.fs.setConfig("config", config.value)
+    config.value[setting] = value
+    await window.fs.setConfig("config", raw)
   }
   getSettings()
-
   return { config, show, message, type, close, showPopin, setSettingsValue }
 })
